@@ -1,4 +1,6 @@
-import Layout from "./Layouts/default.vue"; // This line
+import Layout from "./Layouts/default.vue";
+import Login from "/Layouts/Login.vue";
+
 const pages = import.meta.env.SSR
   ? import.meta.globEagerDefault("./Pages/**/*.vue", { eager: true })
   : import.meta.glob("./Pages/**/*.vue", { eager: true });
