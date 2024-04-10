@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_09_011547) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_10_070444) do
   create_table "categories", charset: "latin1", force: :cascade do |t|
     t.string "name"
     t.string "color"
@@ -28,7 +28,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_09_011547) do
   end
 
   create_table "users", charset: "latin1", force: :cascade do |t|
-    t.string "username"
+    t.string "name"
     t.string "password"
     t.string "email"
     t.datetime "created_at", null: false

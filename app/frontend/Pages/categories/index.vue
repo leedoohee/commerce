@@ -1,35 +1,36 @@
 <template>
     <v-container
-        class="spacing-playground pa-6"
+        class="fluid grid-list-xl"
         fluid
     >
-        <v-row>
+        <div class="align-center">
+            <span><v-icon icon="mdi-list-box-outline"></v-icon></span> &nbsp; 
+            <span style="font-size: large; align-items: center; font-weight: bold;">상품관리</span>
+        </div>
+        <div>
+            <div class="float-left">
+            </div>
+            <div class="float-right">
+                <v-btn><v-icon icon="mdi-reload"></v-icon></v-btn>
+                <v-btn><v-icon icon="mdi-magnify"></v-icon></v-btn>
+            </div>
+        </div>
+        <br>
+        <br>
+        <v-row style="height: 70px;">
             <v-col
                 class="d-flex align-center"
                 cols="12"
                 sm="6"
             >
                 <v-select
-                    label="Select"
+                    label="업체"
+                    density="compact"
                     :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                    variant="solo-inverted"
+                    variant="outlined"
+                    color="green-accent-1"
                 >
-                <template v-slot:prepend>
-                    <strong class="text-primary py-1">p</strong>
-                </template>
-
-                <template v-slot:append-outer>
-                    <div class="py-1">
-                    -
-                    </div>
-                </template>
                 </v-select>
-
-                <v-select
-                    label="Select"
-                    :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                    variant="solo-inverted"
-                ></v-select>
             </v-col>
 
             <v-col
@@ -38,116 +39,132 @@
                 sm="6"
             >
                 <v-select
-                    label="Select"
+                    label="상품구분"
+                    density="compact"
                     :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                    variant="solo-inverted"
+                    variant="outlined"
+                    color="green-accent-1"
                 >
-                    <template v-slot:prepend>
-                        <strong class="text-primary py-1">m</strong>
-                    </template>
-
-                    <template v-slot:append-outer>
-                        <div class="py-1">
-                        -
-                        </div>
-                    </template>
                 </v-select>
-
-                <v-select
-                    label="Select"
-                    :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                    variant="solo-inverted"
-                ></v-select>
             </v-col>
         </v-row>
         <v-row>
-            <v-icon icon="mdi-video-input-component"></v-icon> &nbsp;
-            Find a Graphics Card
+            <v-col
+                class="d-flex align-center"
+                cols="12"
+                sm="6"
+            >
+                <v-select
+                    label="상품상태"
+                    density="compact"
+                    :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                    variant="outlined"
+                    color="green-accent-1"
+                >
+                </v-select>
+            </v-col>
+
+            <v-col
+                class="d-flex"
+                cols="12"
+                sm="6"
+            >
+                <v-select
+                    label="주문갯수"
+                    density="compact"
+                    :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                    variant="outlined"
+                    color="green-accent-1"
+                >
+                </v-select>
+            </v-col>
+        </v-row>
+        <v-row>
 
             <v-spacer></v-spacer>
-
+            <v-spacer></v-spacer>
             <v-divider></v-divider>
-            <v-data-table :items="items">
-                <template v-slot:[`header.stock`]>
-                    <div class="text-end">Stock</div>
-                </template>
-
-                <template v-slot:[`item.image`]="{ item }">
-                    <v-card class="my-2" elevation="2" rounded>
-                    <v-img
-                        :src="`https://cdn.vuetifyjs.com/docs/images/graphics/gpus/${item.image}`"
-                        height="64"
-                        cover
-                    ></v-img>
-                    </v-card>
-                </template>
-
-                <template v-slot:[`item.rating`]="{ item }">
-                    <v-rating
-                    :model-value="item.rating"
-                    color="orange-darken-2"
-                    density="compact"
-                    size="small"
-                    readonly
-                    ></v-rating>
-                </template>
-
-                <template v-slot:[`item.stock`]="{ item }">
-                    <div class="text-end">
-                    <v-chip
-                        :color="item.stock ? 'green' : 'red'"
-                        :text="item.stock ? 'In stock' : 'Out of stock'"
-                        class="text-uppercase"
-                        size="small"
-                        label
-                    ></v-chip>
-                    </div>
-                </template>
-            </v-data-table>
         </v-row>
+        <ag-grid-vue
+            :rowData="items"
+            :columnDefs="colDefs"
+            style="height: 500px"
+            class="ag-theme-quartz"
+        ></ag-grid-vue>
     </v-container>
 </template>
 
-<script setup>
+<script>
     import { ref, defineProps, reactive } from 'vue'
-    defineProps('categories');
+    import "ag-grid-community/styles/ag-grid.css";
+    import "ag-grid-community/styles/ag-theme-quartz.css";
+    import { AgGridVue } from "ag-grid-vue3";
 
-    const search = ref('')
-    const items = reactive([
-        {
-            name: 'Nebula GTX 3080',
-            image: '1.png',
-            price: 699.99,
-            rating: 5,
-            stock: true,
+    export default {
+        name: "Categories",
+        components: {
+            AgGridVue
         },
-        {
-            name: 'Galaxy RTX 3080',
-            image: '2.png',
-            price: 799.99,
-            rating: 4,
-            stock: false,
+        setup() {
+            defineProps('categories');
+
+            const search = ref('')
+            const items = reactive([
+                {
+                    name: 'Nebula GTX 3080',
+                    image: '1.png',
+                    price: 699.99,
+                    rating: 5,
+                    stock: true,
+                },
+                {
+                    name: 'Galaxy RTX 3080',
+                    image: '2.png',
+                    price: 799.99,
+                    rating: 4,
+                    stock: false,
+                },
+                {
+                    name: 'Orion RX 6800 XT',
+                    image: '3.png',
+                    price: 649.99,
+                    rating: 3,
+                    stock: true,
+                },
+                {
+                    name: 'Vortex RTX 3090',
+                    image: '4.png',
+                    price: 1499.99,
+                    rating: 4,
+                    stock: true,
+                },
+                {
+                    name: 'Cosmos GTX 1660 Super',
+                    image: '5.png',
+                    price: 299.99,
+                    rating: 4,
+                    stock: false,
+                }
+            ])
+
+            const colDefs = ref([
+                { field: "name" },
+                { field: "image" },
+                { field: "price" },
+                { field: "rating" },
+                { field: "stock" }
+            ]);
+
+            return {
+                items,
+                colDefs,
+            };
         },
-        {
-            name: 'Orion RX 6800 XT',
-            image: '3.png',
-            price: 649.99,
-            rating: 3,
-            stock: true,
-        },
-        {
-            name: 'Vortex RTX 3090',
-            image: '4.png',
-            price: 1499.99,
-            rating: 4,
-            stock: true,
-        },
-        {
-            name: 'Cosmos GTX 1660 Super',
-            image: '5.png',
-            price: 299.99,
-            rating: 4,
-            stock: false,
-        }
-    ])
+    };
 </script>
+<style lang="scss">
+    .select-box {
+        height: 20px;
+        width: 120px;
+    }
+</style>

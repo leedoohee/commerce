@@ -1,0 +1,4 @@
+@use 'vuetify/settings' with (
+  $select-max-height: 30px,
+  $select-max-width: 150px
+);

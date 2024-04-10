@@ -1,5 +1,4 @@
 import Layout from "./Layouts/default.vue";
-import Login from "/Layouts/Login.vue";
 
 const pages = import.meta.env.SSR
   ? import.meta.globEagerDefault("./Pages/**/*.vue", { eager: true })
@@ -14,7 +13,9 @@ export async function resolvePage(name) {
         );
     }
 
-    page.default.layout = page.default.layout || Layout;
-    //page.default.layout = page.default.layout;
+    if(!name.startsWith('login/')) {
+        page.default.layout = page.default.layout || Layout;
+    } 
+    
     return import.meta.env.SSR ? page : (await page).default;
 }

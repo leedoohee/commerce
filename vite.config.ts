@@ -8,7 +8,12 @@ export default defineConfig({
   plugins: [
     RubyPlugin(),
     vue(),
-    vuetify({ autoImport: true }),
+    vuetify({
+      autoImport: true,
+      // styles: {
+      //   configFile: '/styles/settings.scss',
+      // },
+    }),
     FullReload(['config/routes.rb', 'app/views/**/*'], { delay: 200 }),
   ],
 })

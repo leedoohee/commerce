@@ -1,14 +1,14 @@
 <template>
     <v-app id="inspire">
       <v-app-bar
-        class="bg-deep-purple"
+        class="bg-green-accent-1"
         density="compact"
       >
         <template v-slot:prepend>
           <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
         </template>
 
-        <v-app-bar-title>Photos</v-app-bar-title>
+        <v-app-bar-title>어드민</v-app-bar-title>
 
         <template v-slot:append>
           <v-btn icon="mdi-dots-vertical"></v-btn>
@@ -16,8 +16,8 @@
       </v-app-bar>
       
       <v-navigation-drawer
-        class="bg-deep-purple"
-        theme="dark"
+        class="bg-green-accent-1"
+        theme="transparent"
         permanent
         v-model="drawer"
       >
@@ -27,13 +27,6 @@
           <v-list-item prepend-icon="mdi-gavel" title="Admin"></v-list-item>
         </v-list>
 
-        <template v-slot:append>
-          <div class="pa-2">
-            <v-btn block>
-              Logout
-            </v-btn>
-          </div>
-        </template>
       </v-navigation-drawer>
   
       <v-main>
@@ -69,5 +62,5 @@
         color: #212121;
         text-decoration-line: none;
     }
-
+    
 </style>
