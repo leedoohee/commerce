@@ -23,25 +23,47 @@
         v-model="drawer"
       >
         <v-treeview
-          class="mt-5"
-          :open="open"
-          v-model="tree"
           :items="items"
-          item-key="name"
-          activatable
+          item-value="id"
           open-all
-          open-on-click
-        >
-            <template v-slot:prepend="{ item, open }">
-            <v-icon v-if="!item.file">
-              {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
-            </v-icon>
-            <v-icon v-else>
-              {{ files[item.file] }}
-            </v-icon>
-          </template>
-        </v-treeview>
+        ></v-treeview>
 
+        <v-list>
+            <v-list-item class="customPrepend">
+                <v-list-item-content>
+                    <v-list-item-title class="title">
+                        <span class="font-weight-bold">Al-Mehmood</span>
+                    </v-list-item-title>
+                    <v-list-item-subtitle>Transport Company</v-list-item-subtitle>
+                </v-list-item-content>
+            </v-list-item>
+            <v-divider></v-divider>
+            <v-list-item
+              class="customPrepend"
+              v-for="(item, i) in navLinks"
+              :key="i"
+              :value="item"
+              color="primary"
+            >
+              <template v-slot:prepend>
+                <v-icon :icon="item.icon"></v-icon>
+              </template>
+
+              <v-list-item-title>{{ item.text }}</v-list-item-title>
+              <v-list-item
+                v-for="(sub, i) in item.subLinks"
+                :key="i"
+                :value="sub"
+                color="primary"
+              >
+                <template v-slot:prepend>
+                  <v-icon :icon="sub.icon"></v-icon>
+                </template>
+
+                <v-list-item-title>{{ sub.text }}</v-list-item-title>
+              </v-list-item>
+            </v-list-item>
+        </v-list>
       </v-navigation-drawer>
   
       <v-main>
@@ -55,80 +77,106 @@
 <script setup>
     import { ref, reactive } from 'vue'
 
-    const drawer = ref(null)
-    const rail = ref(false)
-    const modalFlag = ref(false)
-    const initiallyOpen = ref(['public'])
-    const files = ref({
-        html: 'mdi-language-html5',
-        js: 'mdi-nodejs',
-        json: 'mdi-code-json',
-        md: 'mdi-language-markdown',
-        pdf: 'mdi-file-pdf-box',
-        png: 'mdi-file-image',
-        txt: 'mdi-file-document-outline',
-        xls: 'mdi-file-excel',
-    })
-    const tree =  ref([])
-    const items = reactive([
+    const drawer = ref(true)
+    const navLinks = [
+        { icon: "dashboard", text: "Dashboard", route: "/" },
+        { icon: "star", text: "Ratings", route: "/ratings" },
         {
-          title: '.git',
+            icon: "people",
+            text: "Drivers",
+            route: "/drivers",
+            subLinks: [
+                { text: "Add Driver", route: "/drivers/add" },
+                { text: "Add Driver", route: "/drivers/add" }
+            ]
         },
         {
-          title: 'node_modules',
+            icon: "person_outline",
+            text: "Manager",
+            route: "/managers",
+            subLinks: [
+                { text: "Add Manager", route: "/managers/add" },
+                { text: "Managers", route: "/managers" }
+            ]
+        },
+        { icon: "person", text: "Manage Users", route: "/users" }
+    ]
+    const items= [
+        {
+          id: 1,
+          title: 'Applications :',
+          children: [
+            { id: 2, title: 'Calendar : app' },
+            { id: 3, title: 'Chrome : app' },
+            { id: 4, title: 'Webstorm : app' },
+          ],
         },
         {
-          title: 'public',
+          id: 5,
+          title: 'Documents :',
           children: [
             {
-              title: 'static',
-              children: [{
-                title: 'logo.png',
-                file: 'png',
-              }],
+              id: 6,
+              title: 'vuetify :',
+              children: [
+                {
+                  id: 7,
+                  title: 'src :',
+                  children: [
+                    { id: 8, title: 'index : ts' },
+                    { id: 9, title: 'bootstrap : ts' },
+                  ],
+                },
+              ],
             },
             {
-              title: 'favicon.ico',
-              file: 'png',
-            },
-            {
-              title: 'index.html',
-              file: 'html',
+              id: 10,
+              title: 'material2 :',
+              children: [
+                {
+                  id: 11,
+                  title: 'src :',
+                  children: [
+                    { id: 12, title: 'v-btn : ts' },
+                    { id: 13, title: 'v-card : ts' },
+                    { id: 14, title: 'v-window : ts' },
+                  ],
+                },
+              ],
             },
           ],
         },
         {
-          title: '.gitignore',
-          file: 'txt',
+          id: 15,
+          title: 'Downloads :',
+          children: [
+            { id: 16, title: 'October : pdf' },
+            { id: 17, title: 'November : pdf' },
+            { id: 18, title: 'Tutorial : html' },
+          ],
         },
         {
-          title: 'babel.config.js',
-          file: 'js',
+          id: 19,
+          title: 'Videos :',
+          children: [
+            {
+              id: 20,
+              title: 'Tutorials :',
+              children: [
+                { id: 21, title: 'Basic layouts : mp4' },
+                { id: 22, title: 'Advanced techniques : mp4' },
+                { id: 23, title: 'All about app : dir' },
+              ],
+            },
+            { id: 24, title: 'Intro : mov' },
+            { id: 25, title: 'Conference introduction : avi' },
+          ],
         },
-        {
-          title: 'package.json',
-          file: 'json',
-        },
-        {
-          title: 'README.md',
-          file: 'md',
-        },
-        {
-          title: 'vue.config.js',
-          file: 'js',
-        },
-        {
-          title: 'yarn.lock',
-          file: 'txt',
-        },
-    ])
+      ]
 </script>
 
-<style lang="scss" scoped>
-
-    .inertia-link {
-        color: #212121;
-        text-decoration-line: none;
+<style scoped>
+    .customPrepend :deep(.v-list-item__prepend .v-list-item__spacer) {
+      width: 32px;
     }
-    
 </style>
