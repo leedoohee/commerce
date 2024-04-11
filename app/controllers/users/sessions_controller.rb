@@ -2,14 +2,14 @@
 
 class Users::SessionsController < Devise::SessionsController
   # before_action :configure_sign_in_params, only: [:create]
-  include RackSessionsFix
+  #include RackSessionsFix
   respond_to :json
 
   private
 
   def respond_with(current_user, _opt = {})
     render json: {
-      status: { code: 200, message: 'Logged in successfully.', data: { user: UserSerializer.new(resource).serializable_hash[:data][:attributes] }
+      status: { code: 200, message: 'Logged in successfully.', data: { user: UserSerializer.new(resource).serializable_hash[:data][:attributes] } }
     }, status: :ok
   end
 
