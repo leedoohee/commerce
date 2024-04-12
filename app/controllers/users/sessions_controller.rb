@@ -1,16 +1,18 @@
 # frozen_string_literal: true
 
 class Users::SessionsController < Devise::SessionsController
-  # before_action :configure_sign_in_params, only: [:create]
+
+  #skip_before_action :authenticate_user!, only: [:respond_with]
   #include RackSessionsFix
   respond_to :json
 
   private
 
   def respond_with(current_user, _opt = {})
+    Rails.logger.info("object: #{current_user}")
     render json: {
       status: { code: 200, message: 'Logged in successfully.', data: { user: UserSerializer.new(resource).serializable_hash[:data][:attributes] } }
-    }, status: :ok
+    }
   end
 
   def respond_to_on_destroy
@@ -22,11 +24,11 @@ class Users::SessionsController < Devise::SessionsController
 
     if current_user
       render json: {
-        status: { code: 200, message: 'Logged out successfully.' }, status: :ok
+        status: { code: 200, message: 'Logged out successfully.' }
       }
     else
       render json: {
-        status: { code: 401, message: "Couldn't find an active session." }, status: :unauthorized
+        status: { code: 401, message: "Couldn't find an active session." }
       }
     end
   end

@@ -304,6 +304,7 @@ DEPENDENCIES
   jsonapi-serializer
   mysql2
   puma (>= 5.0)
+  rack
   rack-cors
   rails (~> 7.1.3, >= 7.1.3.2)
   selenium-webdriver

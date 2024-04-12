@@ -22,6 +22,7 @@
               placeholder="Email address"
               prepend-inner-icon="mdi-email-outline"
               variant="outlined"
+              v-model="email"
             ></v-text-field>
 
             <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
@@ -43,6 +44,7 @@
               placeholder="Enter your password"
               prepend-inner-icon="mdi-lock-outline"
               variant="outlined"
+              v-model="password"
               @click:append-inner="visible = !visible"
             ></v-text-field>
 
@@ -61,7 +63,7 @@
               color="blue"
               size="large"
               variant="tonal"
-              block
+              @click="onLogin"
             >
               Log In
             </v-btn>
@@ -81,14 +83,40 @@
     </v-parallax>
 </template>
 <script>
-  import { defineOptions } from "vue";
+  import { ref, reactive, defineOptions } from "vue";
   import Layout from "../../Layouts/login.vue";
+  import Axios from "axios";
 
   defineOptions({ layout: Layout });
 
   export default {
-    data: () => ({
-      visible: false,
-    }),
+    props: {
+      name: String
+    },
+    setup(props) {
+      const visible = ref(false);
+      const email = 'clampea4120@gmail.com';
+      const password = '123456';
+
+      const onLogin = function() {
+        Axios.post("http://localhost:3000/login", {
+          "user": {
+            "email": email,
+            "password": password
+          }
+        }).then((response) => {
+          console.log(response);
+        });
+      }
+
+      return { 
+        onLogin,
+        email,
+        password,
+        visible
+      }
+    }
   }
+
+
 </script>

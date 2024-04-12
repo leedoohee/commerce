@@ -1,4 +1,5 @@
 require "active_support/core_ext/integer/time"
+require_relative '../../lib/auth_middleware'
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
@@ -72,7 +73,10 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 
   # Raise error when a before_action's only/except options reference missing actions
-  config.action_controller.raise_on_missing_callback_actions = true
+  config.action_controller.raise_on_missing_callback_actions = false
 
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
+  #config.middleware.use AuthMiddleware
+
 end

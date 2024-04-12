@@ -4,7 +4,7 @@
         fluid
     >
         <div class="align-center">
-            <span><v-icon icon="mdi-list-box-outline"></v-icon></span> &nbsp; 
+            <v-icon icon="mdi-list-box-outline"></v-icon> &nbsp; 
             <span style="font-size: large; align-items: center; font-weight: bold;">상품관리</span>
         </div>
         <div>
