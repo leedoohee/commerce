@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
 
     before_action :configure_permitted_parameters, if: :devise_controller?
 
-    #before_action :authenticate_user, only: ['sessions#respond_to_on_destroy']
+    # before_action :authenticate_user, only: ['sessions#respond_to_on_destroy']
 
     protected
     

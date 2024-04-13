@@ -105,7 +105,8 @@
             "password": password
           }
         }).then((response) => {
-          console.log(response);
+          localStorage.setItem('token', response.headers.authorization);
+          window.location.href = '/categories';
         });
       }
 

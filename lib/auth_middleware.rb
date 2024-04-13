@@ -9,16 +9,14 @@ class AuthMiddleware
       request = ActionDispatch::Request.new env
       status, headers, body = @app.call(env)
 
-      Rails.logger.info("object: #{request.original_fullpath}")
+      Rails.logger.info("object: #{request.cookie_jar.signed[:token]}")
+      if !request.cookie_jar.signed[:token]
+        if request.original_fullpath != '/login' && request.original_fullpath != '/signup' && request.original_fullpath != '/login-v2'
 
-      if !headers['authorization']
-        if request.original_fullpath != '/login'
-          Rails.logger.info("object: #{headers['authorization']}")
-          
           begin
-            jwt_payload = JWT.decode(headers['authorization'].split(' ').last, Rails.application.credentials.devise_jwt_secret_key).first
+            jwt_payload = JWT.decode(request.cookie_jar.signed[:token].split(' ').last, Rails.application.credentials.devise_jwt_secret_key).first
           rescue JWT::ExpiredSignature, JWT::VerificationError, JWT::DecodeError
-            Rails.logger.info("object: #{headers['authorization'].split(' ')[1].remove('"')}")
+            Rails.logger.info("object: #{request.cookie_jar.signed[:token].split(' ')[1].remove('"')}")
           end
 
           @current_user = User.find(jwt_payload)
