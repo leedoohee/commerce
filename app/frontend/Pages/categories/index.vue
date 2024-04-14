@@ -99,11 +99,13 @@
     import "ag-grid-community/styles/ag-grid.css";
     import "ag-grid-community/styles/ag-theme-quartz.css";
     import { AgGridVue } from "ag-grid-vue3";
+    import show from './show.vue';
 
     export default {
         name: "Categories",
         components: {
-            AgGridVue
+            AgGridVue,
+            show
         },
         setup() {
             defineProps('categories');
@@ -115,7 +117,7 @@
                     image: '1.png',
                     price: 699.99,
                     rating: 5,
-                    stock: true,
+                    stock: true
                 },
                 {
                     name: 'Galaxy RTX 3080',
@@ -148,7 +150,9 @@
             ])
 
             const colDefs = ref([
-                { field: "name" },
+                { field: "name", cellRenderer: function(param) {
+                    return `<a href="#" onclick="window.open('/categories/show', '_blank', 'width=800, height=600'); return false;">${param.value}</a>`;
+                }},
                 { field: "image" },
                 { field: "price" },
                 { field: "rating" },

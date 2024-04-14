@@ -1,5 +1,5 @@
 class CategoriesController < ApplicationController
-  before_action :set_category, only: %i[ show edit update destroy ]
+  #before_action :set_category, only: %i[ show edit update destroy ]
   before_action :authenticate_user!, except: [:index, :show]
 
   # GET /categories or /categories.json
@@ -12,6 +12,9 @@ class CategoriesController < ApplicationController
 
   # GET /categories/1 or /categories/1.json
   def show
+    render inertia: "categories/show", props: {
+      
+    }
   end
 
   # GET /categories/new

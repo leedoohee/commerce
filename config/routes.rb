@@ -22,6 +22,8 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   get "categories" => "categories#index"
+  
+  get "categories/show" => "categories#show"
 
   get "expenses" => "expenses#index"
   

@@ -6,6 +6,7 @@ const pages = import.meta.env.SSR
 
 export async function resolvePage(name) {
     const page = pages[`./Pages/${name}.vue`];
+    const show_page = String(name).split('/')[1] == 'show' ? true : false;
 
     if (!page) {
         throw new Error(
@@ -13,7 +14,7 @@ export async function resolvePage(name) {
         );
     }
 
-    if(!name.startsWith('login/')) {
+    if(!(name.startsWith('login/') || show_page)) {
         page.default.layout = page.default.layout || Layout;
     } 
     
