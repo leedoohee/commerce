@@ -5,6 +5,7 @@
     "@js-from-routes/inertia": "^1.10.2",
     "@mdi/font": "^7.4.47",
     "@vitejs/plugin-vue": "^5.0.4",
+    "@vueup/vue-quill": "^1.2.0",
     "ag-grid-vue3": "^31.2.0",
     "axios": "^1.6.8",
     "mdi": "^2.2.43",
@@ -15,6 +16,7 @@
     "vuetify": "^3.5.14"
   },
   "devDependencies": {
+    "prettier": "3.2.5",
     "vite": "^5.0.0",
     "vite-plugin-ruby": "^5.0.0"
   }

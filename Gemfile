@@ -57,6 +57,11 @@ gem 'rack-cors'
 
 gem 'rack'
 
+# boot speed up
+gem "spring", group: :development
+
+gem 'spring-commands-rspec', group: :development
+
 gem "js_from_routes", group: :development
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
