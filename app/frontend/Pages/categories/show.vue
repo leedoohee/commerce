@@ -24,19 +24,9 @@
   >
     <v-expansion-panel>
       <v-expansion-panel-title>
-        <template v-slot:default="{ expanded }">
-          <v-row no-gutters>
-            <v-col class="d-flex justify-start" cols="4"> Trip name </v-col>
-            <v-col class="text-grey" cols="8">
-              <v-fade-transition leave-absolute>
-                <span v-if="expanded" key="0"> Enter a name for the trip </span>
-                <span v-else key="1">
-                  {{ trip.name }}
-                </span>
-              </v-fade-transition>
-            </v-col>
-          </v-row>
-        </template>
+        <v-row no-gutters>
+          <v-col class="d-flex justify-start" cols="4"> 이미지 </v-col>
+        </v-row>
       </v-expansion-panel-title>
       <v-expansion-panel-text>
         <v-carousel hide-delimiters>
@@ -59,17 +49,9 @@
     </v-expansion-panel>
 
     <v-expansion-panel>
-      <v-expansion-panel-title v-slot="{ expanded }">
+      <v-expansion-panel-title>
         <v-row no-gutters>
-          <v-col class="d-flex justify-start" cols="4"> Location </v-col>
-          <v-col class="text--secondary" cols="8">
-            <v-fade-transition leave-absolute>
-              <span v-if="expanded" key="0"> Select trip destination </span>
-              <span v-else key="1">
-                {{ trip.location }}
-              </span>
-            </v-fade-transition>
-          </v-col>
+          <v-col class="d-flex justify-start" cols="4"> 옵션 </v-col>
         </v-row>
       </v-expansion-panel-title>
       <v-expansion-panel-text>
@@ -111,34 +93,25 @@
             </v-text-field>
           </v-col>
         </v-row>
-
+        <ag-grid-vue
+          :rowData="items"
+          :columnDefs="colDefs"
+          @grid-ready="onGridReady"
+          style="height: 500px"
+          class="ag-theme-quartz"
+        ></ag-grid-vue>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="secondary" variant="text"> Cancel </v-btn>
-          <v-btn color="primary" variant="text"> Save </v-btn>
+          <v-btn color="secondary" variant="text"> UnLoad </v-btn>
+          <v-btn color="primary" variant="text" @click="loadItems"> Load </v-btn>
         </v-card-actions>
       </v-expansion-panel-text>
     </v-expansion-panel>
 
     <v-expansion-panel>
-      <v-expansion-panel-title v-slot="{ expanded }">
+      <v-expansion-panel-title>
         <v-row no-gutters>
-          <v-col class="d-flex justify-start" cols="4">
-            Start and end dates
-          </v-col>
-          <v-col class="text--secondary" cols="8">
-            <v-fade-transition leave-absolute>
-              <span v-if="expanded">When do you want to travel?</span>
-              <v-row v-else style="width: 100%" no-gutters>
-                <v-col class="d-flex justify-start" cols="6">
-                  Start date: {{ trip.start || "Not set" }}
-                </v-col>
-                <v-col class="d-flex justify-start" cols="6">
-                  End date: {{ trip.end || "Not set" }}
-                </v-col>
-              </v-row>
-            </v-fade-transition>
-          </v-col>
+          <v-col class="d-flex justify-start" cols="4"> 상세이미지 </v-col>
         </v-row>
       </v-expansion-panel-title>
       <v-expansion-panel-text>
@@ -152,11 +125,13 @@
 <script>
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
+import { AgGridVue } from "ag-grid-vue3";
 
 export default {
   name: "show",
   components: {
     QuillEditor,
+    AgGridVue
   },
   data: () => ({
     trip: {
@@ -165,8 +140,8 @@ export default {
       start: null,
       end: null,
     },
-    sizeData: [],
-    colorData: [],
+    sizeData: ['S', 'M', 'L'],
+    colorData: ['Blue', 'Black', 'Red'],
     locations: [
       "Australia",
       "Barbados",
@@ -177,7 +152,22 @@ export default {
     ],
     panel: [0, 1, 2],
     disabled: false,
-    expanded: true
+    expanded: true,
+    colDefs: [
+      { field: "option", 
+        checkboxSelection: true,
+        children: [
+          { field: "size" },
+          { field: "color" }
+        ]
+      },
+      { field: "quantity" },
+      { field: "price" },
+    ],
+    items: [
+
+    ],
+    gridApi: null
   }),
   methods: {
     addSize() {
@@ -187,7 +177,19 @@ export default {
     addColor() {
       this.colorData.push(this.color);
       this.color = "";
-    }
+    },
+    loadItems() {
+      for(const size of this.sizeData) {
+        for(const color of this.colorData) {
+          this.items.push({ size: size, color: color, quantity: 0, price: 0 });
+        }
+      }
+
+      this.gridApi.setGridOption("rowData", this.items);
+    },
+    onGridReady(params) {
+      this.gridApi = params.api;
+    },
   }
 }
 </script>
