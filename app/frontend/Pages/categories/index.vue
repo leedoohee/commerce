@@ -108,13 +108,11 @@ import { ref, defineProps, reactive } from "vue";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { AgGridVue } from "ag-grid-vue3";
-import show from "./show.vue";
 
 export default {
   name: "Categories",
   components: {
     AgGridVue,
-    show,
   },
   setup() {
     defineProps("categories");
