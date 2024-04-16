@@ -57,6 +57,174 @@
     <v-expansion-panel>
       <v-expansion-panel-title>
         <v-row no-gutters>
+          <v-col class="d-flex justify-start" cols="4"> 상세정보 </v-col>
+        </v-row>
+      </v-expansion-panel-title>
+      <v-expansion-panel-text>
+        <v-row>
+          <v-col
+            cols="12"
+            sm="12"
+            style="height: 75px;"
+          >
+            <v-text-field
+              label="상품명" 
+              variant="outlined"
+              color="green-accent-1"
+              v-model="name"
+            >
+            </v-text-field>
+          </v-col>
+        </v-row>
+
+        <v-row>
+          <v-col
+            cols="12"
+            sm="12"
+            style="height: 75px;"
+          >
+            <v-select
+              label="카테고리" 
+              variant="outlined"
+              color="green-accent-1"
+              :items="categories"
+            >
+            </v-select>
+          </v-col>
+        </v-row>
+
+        <v-row>
+          <v-col
+            cols="12"
+            sm="5"
+            style="height: 75px;"
+          >
+            <v-select
+              label="상품상태" 
+              variant="outlined"
+              color="green-accent-1"
+              :items="state"
+            >
+            </v-select>
+          </v-col>
+          <v-col
+            cols="12"
+            sm="1"
+            style="height: 75px;"
+          >
+            <v-btn color="green-accent-1" variant="plain" rounded="lg" style="width: 100px; height: 58px;" icon="mdi-check"></v-btn>
+          </v-col> 
+          <v-col
+            cols="12"
+            sm="6"
+            style="height: 75px;"
+          >
+            <v-text-field
+              label="스타일넘버" 
+              variant="outlined"
+              color="green-accent-1"
+            >
+            </v-text-field>
+          </v-col>
+        </v-row>
+        
+        <v-row>
+          <v-col
+            cols="12"
+            sm="6"
+            style="height: 75px;"
+          >
+            <v-text-field
+              label="판매가" 
+              variant="outlined"
+              color="green-accent-1"
+              suffix="원"
+            >
+            </v-text-field>
+          </v-col>
+          <v-col
+            cols="12"
+            sm="6"
+            style="height: 75px;"
+          >
+            <v-text-field
+              label="원가" 
+              variant="outlined"
+              color="green-accent-1"
+              suffix="원"
+            >
+            </v-text-field>
+          </v-col>
+        </v-row>
+
+        <v-row>
+          <v-col
+            cols="12"
+            sm="6"
+            style="height: 75px;"
+          >
+            <v-text-field
+              label="마진율" 
+              variant="outlined"
+              color="green-accent-1"
+              suffix="%"
+            >
+            </v-text-field>
+          </v-col>
+
+          <v-col
+            cols="12"
+            sm="6"
+            style="height: 75px;"
+          >
+            <v-select
+              label="과세" 
+              variant="outlined"
+              color="green-accent-1"
+              :items = "
+              [
+                '과세',
+                '면세'
+              ]"
+            >
+            </v-select>
+          </v-col>
+        </v-row>
+        
+        <v-row>
+          <v-col
+            cols="12"
+            sm="6"
+            style="height: 90px;"
+          >
+            <v-text-field
+              label="제조사" 
+              variant="outlined"
+              color="green-accent-1"
+            >
+            </v-text-field>
+          </v-col>
+
+          <v-col
+            cols="12"
+            sm="6"
+            style="height: 90px;"
+          >
+            <v-text-field
+              label="원산지" 
+              variant="outlined"
+              color="green-accent-1"
+            >
+            </v-text-field>
+          </v-col>
+        </v-row>
+        
+      </v-expansion-panel-text>
+    </v-expansion-panel>
+
+    <v-expansion-panel>
+      <v-expansion-panel-title>
+        <v-row no-gutters>
           <v-col class="d-flex justify-start" cols="4"> 옵션 </v-col>
         </v-row>
       </v-expansion-panel-title>
@@ -148,15 +316,19 @@ export default {
     },
     sizeData: ['S', 'M', 'L'],
     colorData: ['Blue', 'Black', 'Red'],
-    locations: [
-      "Australia",
-      "Barbados",
-      "Chile",
-      "Denmark",
-      "Ecuador",
-      "France",
+    categories: [
+      "상의 > 블라우스",
+      "상의 > 티셔츠",
+      "상의 > 니트",
+      "하의 > 슬랙스",
+      "하의 > 청바지",
     ],
-    panel: [0, 1, 2],
+    state: [
+      "판매중",
+      "품절",
+      "판매중지",
+    ],
+    panel: [0, 1, 2, 3],
     disabled: false,
     expanded: true,
     colDefs: [
