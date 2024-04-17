@@ -26,22 +26,16 @@
         </v-row>
       </v-expansion-panel-title>
       <v-expansion-panel-text>
-        <v-card class="mx-auto" elevation="10" max-width="700">
-          <v-carousel show-arrows="hover">
-            <v-carousel-item
-              src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-              cover
-            ></v-carousel-item>
-
-            <v-carousel-item
-              src="https://cdn.vuetifyjs.com/images/cards/hotel.jpg"
-              cover
-            ></v-carousel-item>
-
-            <v-carousel-item
-              src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-              cover
-            ></v-carousel-item>
+        <v-card class="mx-auto" elevation="10" max-width="700" max-height="700">
+          <v-carousel v-if="uploadedFiles.length == 0" show-arrows="hover">
+          </v-carousel>
+          <v-carousel v-if="uploadedFiles.length > 0" show-arrows="hover">
+            <template v-for="(item, i) in uploadedFiles" :key="i">
+              <v-carousel-item
+                :src="item.url"
+                aspect-ratio="1"
+              ></v-carousel-item>
+            </template>
           </v-carousel>
         </v-card>
       </v-expansion-panel-text>
@@ -50,8 +44,10 @@
           accept="image/*"
           multiple
           color="green-accent-1"
-          label="File input"
+          label="이미지 파일"
+          density="compact"
           variant="solo"
+          @change.prevent="onSelectedFiles($event)"
         ></v-file-input>
       </v-expansion-panel-text>
     </v-expansion-panel>
@@ -64,10 +60,11 @@
       </v-expansion-panel-title>
       <v-expansion-panel-text>
         <v-row>
-          <v-col cols="12" sm="12" style="height: 75px">
+          <v-col cols="12" sm="12" style="height: 65px">
             <v-text-field
               label="상품명"
               variant="outlined"
+              density="compact"
               color="green-accent-1"
               v-model="name"
             >
@@ -76,10 +73,11 @@
         </v-row>
 
         <v-row>
-          <v-col cols="12" sm="12" style="height: 75px">
+          <v-col cols="12" sm="12" style="height: 65px">
             <v-select
               label="카테고리"
               variant="outlined"
+              density="compact"
               color="green-accent-1"
               :items="categories"
             >
@@ -88,28 +86,31 @@
         </v-row>
 
         <v-row>
-          <v-col cols="12" sm="5" style="height: 75px">
+          <v-col cols="12" sm="5" style="height: 65px">
             <v-select
               label="상품상태"
               variant="outlined"
+              density="compact"
               color="green-accent-1"
               :items="state"
             >
             </v-select>
           </v-col>
-          <v-col cols="12" sm="1" style="height: 75px">
+          <v-col cols="12" sm="1" style="height: 65px">
             <v-btn
               color="green-accent-1"
               variant="plain"
               rounded="lg"
-              style="width: 100px; height: 58px"
+              style="width: 100px; height: 42px;"
+              density="compact"
               icon="mdi-check"
             ></v-btn>
           </v-col>
-          <v-col cols="12" sm="6" style="height: 75px">
+          <v-col cols="12" sm="6" style="height: 65px">
             <v-text-field
               label="스타일넘버"
               variant="outlined"
+              density="compact"
               color="green-accent-1"
             >
             </v-text-field>
@@ -117,19 +118,21 @@
         </v-row>
 
         <v-row>
-          <v-col cols="12" sm="6" style="height: 75px">
+          <v-col cols="12" sm="6" style="height: 65px">
             <v-text-field
               label="판매가"
               variant="outlined"
+              density="compact"
               color="green-accent-1"
               suffix="원"
             >
             </v-text-field>
           </v-col>
-          <v-col cols="12" sm="6" style="height: 75px">
+          <v-col cols="12" sm="6" style="height: 65px">
             <v-text-field
               label="원가"
               variant="outlined"
+              density="compact"
               color="green-accent-1"
               suffix="원"
             >
@@ -138,20 +141,22 @@
         </v-row>
 
         <v-row>
-          <v-col cols="12" sm="6" style="height: 75px">
+          <v-col cols="12" sm="6" style="height: 65px">
             <v-text-field
               label="마진율"
               variant="outlined"
+              density="compact"
               color="green-accent-1"
               suffix="%"
             >
             </v-text-field>
           </v-col>
 
-          <v-col cols="12" sm="6" style="height: 75px">
+          <v-col cols="12" sm="6" style="height: 65px">
             <v-select
               label="과세"
               variant="outlined"
+              density="compact"
               color="green-accent-1"
               :items="['과세', '면세']"
             >
@@ -160,19 +165,21 @@
         </v-row>
 
         <v-row>
-          <v-col cols="12" sm="6" style="height: 90px">
+          <v-col cols="12" sm="6" style="height: 80px">
             <v-text-field
               label="제조사"
               variant="outlined"
+              density="compact"
               color="green-accent-1"
             >
             </v-text-field>
           </v-col>
 
-          <v-col cols="12" sm="6" style="height: 90px">
+          <v-col cols="12" sm="6" style="height: 80px">
             <v-text-field
               label="원산지"
               variant="outlined"
+              density="compact"
               color="green-accent-1"
             >
             </v-text-field>
@@ -188,49 +195,97 @@
         </v-row>
       </v-expansion-panel-title>
       <v-expansion-panel-text>
-        <v-row>
-          <v-col cols="12" sm="6">
-            <v-text-field
-              label="사이즈"
-              variant="outlined"
-              color="green-accent-1"
-              v-model="size"
-              @keydown.enter="addSize"
-            >
-              <template v-slot:prepend-inner>
-                <div v-for="(sizeText, index) in sizeData" :key="index">
-                  <v-chip color="green-accent-1" closable>{{
-                    sizeText
-                  }}</v-chip>
-                </div>
-              </template>
-            </v-text-field>
-          </v-col>
-          <v-col cols="12" sm="6">
-            <v-text-field
-              label="컬러"
-              variant="outlined"
-              color="green-accent-1"
-              v-model="color"
-              @keydown.enter="addColor"
-            >
-              <template v-slot:prepend-inner>
-                <div v-for="(colorText, index) in colorData" :key="index">
-                  <v-chip color="green-accent-1" closable>{{
-                    colorText
-                  }}</v-chip>
-                </div>
-              </template>
-            </v-text-field>
-          </v-col>
-        </v-row>
-        <ag-grid-vue
-          :rowData="items"
-          :columnDefs="colDefs"
-          @grid-ready="onGridReady"
-          style="height: 500px"
-          class="ag-theme-quartz"
-        ></ag-grid-vue>
+        <v-radio-group
+          v-model="options"
+          inline
+        >
+          <v-radio
+            label="단일옵션"
+            value="singleOption"
+            color="green-accent-1"
+          ></v-radio>
+          <v-radio
+            label="조합옵션"
+            value="matrixOption"
+            color="green-accent-1"
+          ></v-radio>
+        </v-radio-group>
+        <template v-if="options === 'singleOption'">
+          <v-row>
+            <v-col cols="12" sm="6">
+              <v-text-field
+                label="옵션"
+                variant="outlined"
+                color="green-accent-1"
+                density="compact"
+                v-model="size"
+                @keydown.enter="addSize"
+              >
+                <template v-slot:prepend-inner>
+                  <div v-for="(optionText, index) in optionData" :key="index">
+                    <v-chip color="green-accent-1" closable>{{
+                      optionText
+                    }}</v-chip>
+                  </div>
+                </template>
+              </v-text-field>
+            </v-col>
+          </v-row>
+          <ag-grid-vue
+            :rowData="singleItems"
+            :columnDefs="singleColDefs"
+            @grid-ready="onGridReady"
+            style="height: 500px"
+            class="ag-theme-quartz"
+          ></ag-grid-vue>
+        </template>
+        <template v-if="options === 'matrixOption'">
+          <v-row>
+            <v-col cols="12" sm="6">
+              <v-text-field
+                label="사이즈"
+                variant="outlined"
+                color="green-accent-1"
+                density="compact"
+                v-model="size"
+                @keydown.enter="addSize"
+              >
+                <template v-slot:prepend-inner>
+                  <div v-for="(sizeText, index) in sizeData" :key="index">
+                    <v-chip color="green-accent-1" closable>{{
+                      sizeText
+                    }}</v-chip>
+                  </div>
+                </template>
+              </v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field
+                label="컬러"
+                variant="outlined"
+                color="green-accent-1"
+                density="compact"
+                v-model="color"
+                @keydown.enter="addColor"
+              >
+                <template v-slot:prepend-inner>
+                  <div v-for="(colorText, index) in colorData" :key="index">
+                    <v-chip color="green-accent-1" closable>{{
+                      colorText
+                    }}</v-chip>
+                  </div>
+                </template>
+              </v-text-field>
+            </v-col>
+          </v-row>
+          <ag-grid-vue
+            :rowData="matrixItems"
+            :columnDefs="matrixColDefs"
+            @grid-ready="onGridReady"
+            style="height: 500px"
+            class="ag-theme-quartz"
+          ></ag-grid-vue>
+        </template>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="secondary" variant="text"> UnLoad </v-btn>
@@ -281,16 +336,25 @@ export default {
     uploadDialog: false,
     disabled: false,
     expanded: true,
-    colDefs: [
+    singleColDefs: [
       {
         field: "option",
-        checkboxSelection: true,
+      },
+      { field: "quantity" },
+      { field: "price" },
+    ],
+    matrixColDefs: [
+      {
+        field: "option",
         children: [{ field: "size" }, { field: "color" }],
       },
       { field: "quantity" },
       { field: "price" },
     ],
-    items: [],
+    options: "singleOption",
+    optionData: ['S', 'M', 'L', 'Red', 'Blue', 'Black'],
+    matrixItems: [],
+    singleItems: [],
     gridApi: null,
     dragover: false,
     uploadedFiles: [],
@@ -298,6 +362,10 @@ export default {
     multiple: true,
   }),
   methods: {
+    addOption() {
+      this.optionData.push(this.size);
+      this.size = "";
+    },
     addSize() {
       this.sizeData.push(this.size);
       this.size = "";
@@ -307,64 +375,30 @@ export default {
       this.color = "";
     },
     loadItems() {
-      for (const size of this.sizeData) {
-        for (const color of this.colorData) {
-          this.items.push({ size: size, color: color, quantity: 0, price: 0 });
+      if(this.options === 'singleOption') {
+        for (const option of this.optionData) {
+          this.singleItems.push({ option: option, quantity: 0, price: 0 });
+        }
+      } else {
+        for (const size of this.sizeData) {
+          for (const color of this.colorData) {
+            this.matrixItems.push({ size: size, color: color, quantity: 0, price: 0 });
+          }
         }
       }
 
-      this.gridApi.setGridOption("rowData", this.items);
+      const items = this.options === 'singleOption' ? this.singleItems : this.matrixItems;
+      this.gridApi.setGridOption("rowData", items);
     },
     onGridReady(params) {
       this.gridApi = params.api;
     },
-    onOpenImageEditor() {
-      this.show = !this.show;
-    },
-    closeDialog() {
-      // Remove all the uploaded files
-      this.uploadedFiles = [];
-      // Close the dialog box
-      this.$emit("update:dialog", false);
-    },
-    removeFile(fileName) {
-      // Find the index of the
-      const index = this.uploadedFiles.findIndex(
-        (file) => file.name === fileName,
-      );
-      // If file is in uploaded files remove it
-      if (index > -1) this.uploadedFiles.splice(index, 1);
-    },
-    onDrop(e) {
-      e.preventDefault();
-      this.dragover = false;
-      // If there are already uploaded files remove them
-      if (this.uploadedFiles.length > 0) this.uploadedFiles = [];
-      // If user has uploaded multiple files but the component is not multiple throw error
-      if (!this.multiple && e.dataTransfer.files.length > 1) {
-        // this.$store.dispatch("addNotification", {
-        //   message: "Only one file can be uploaded at a time..",
-        //   colour: "error",
-        // });
-      } else {
-        for (let i = 0; i < e.dataTransfer.files.length; i++) {
-          console.log(e.dataTransfer.files[i]);
-          this.uploadedFiles.push(e.dataTransfer.files[i]);
-        }
-      }
-    },
-    submit() {
-      // If there aren't any files to be uploaded throw error
-      if (!this.uploadedFiles.length > 0) {
-        this.$store.dispatch("addNotification", {
-          message: "There are no files to upload",
-          colour: "error",
+    onSelectedFiles(event) {
+      for (let i = 0; i < event.target.files.length; i++) {
+        this.uploadedFiles.push({
+          "url": URL.createObjectURL(event.target.files[i]),
+          "file": event.target.files[i]
         });
-      } else {
-        // Send uploaded files to parent component
-        this.$emit("filesUploaded", this.uploadedFiles);
-        // Close the dialog box
-        this.closeDialog();
       }
     },
   },
