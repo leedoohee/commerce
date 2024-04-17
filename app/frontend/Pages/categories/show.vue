@@ -278,13 +278,23 @@
               </v-text-field>
             </v-col>
           </v-row>
-          <ag-grid-vue
+          <!-- <ag-grid-vue
             :rowData="matrixItems"
             :columnDefs="matrixColDefs"
             @grid-ready="onGridReady"
             style="height: 500px"
             class="ag-theme-quartz"
-          ></ag-grid-vue>
+          ></ag-grid-vue> -->
+          <v-data-table
+            :group-by="groupBy"
+            :headers="headers"
+            :items="desserts"
+            :sort-by="sortBy"
+            class="elevation-1"
+            item-value="name"
+            group-expand
+          >
+          </v-data-table>
         </template>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -322,6 +332,8 @@ export default {
     AgGridVue,
   },
   data: () => ({
+    sortBy: [{ key: 'name' }],
+    groupBy: [{ key: 'dairy' }],
     sizeData: ["S", "M", "L"],
     colorData: ["Blue", "Black", "Red"],
     categories: [
@@ -336,6 +348,7 @@ export default {
     uploadDialog: false,
     disabled: false,
     expanded: true,
+    
     singleColDefs: [
       {
         field: "option",
@@ -345,12 +358,15 @@ export default {
     ],
     matrixColDefs: [
       {
-        field: "option",
-        children: [{ field: "size" }, { field: "color" }],
+        text: 'option',
+        align: 'center',
+        sortable: false,
+        child:["size", "color"]
       },
-      { field: "quantity" },
-      { field: "price" },
+      { text: 'quantity', sortable: false, align: 'center' },
+      { text: 'price', sortable: false, align: 'center' }
     ],
+    itemsPerPage: 5,
     options: "singleOption",
     optionData: ['S', 'M', 'L', 'Red', 'Blue', 'Black'],
     matrixItems: [],
@@ -360,6 +376,69 @@ export default {
     uploadedFiles: [],
     dialog: true,
     multiple: true,
+    headers: [
+      {
+        text: "Dessert (100g serving)",
+        align: "start",
+        value: "name",
+        groupable: false,
+      },
+      { text: "Category", value: "category", align: "right" },
+      { text: "Dairy", value: "dairy", align: "right" },
+    ],
+    search: '',
+    desserts: [
+    {
+        name: "Frozen Yogurt",
+        category: "Ice cream",
+        dairy: "Yes",
+      },
+      {
+        name: "Ice cream sandwich",
+        category: "Ice cream",
+        dairy: "Yes",
+      },
+      {
+        name: "Eclair",
+        category: "Cookie",
+        dairy: "Yes",
+      },
+      {
+        name: "Cupcake",
+        category: "Pastry",
+        dairy: "Yes",
+      },
+      {
+        name: "Gingerbread",
+        category: "Cookie",
+        dairy: "No",
+      },
+      {
+        name: "Jelly bean",
+        category: "Candy",
+        dairy: "No",
+      },
+      {
+        name: "Lollipop",
+        category: "Candy",
+        dairy: "No",
+      },
+      {
+        name: "Honeycomb",
+        category: "Toffee",
+        dairy: "No",
+      },
+      {
+        name: "Donut",
+        category: "Pastry",
+        dairy: "Yes",
+      },
+      {
+        name: "KitKat",
+        category: "Candy",
+        dairy: "Yes",
+      },
+    ],
   }),
   methods: {
     addOption() {

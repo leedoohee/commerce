@@ -5,9 +5,7 @@ class CategoriesController < ApplicationController
   # GET /categories or /categories.json
   def index
     @categories = Category.all
-    render inertia: "categories/index", props: {
-      categories: @categories
-    }
+    render inertia: "categories/index", props: {}
   end
 
   # GET /categories/1 or /categories/1.json
