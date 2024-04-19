@@ -7,12 +7,18 @@
     "@vitejs/plugin-vue": "^5.0.4",
     "@vueup/vue-quill": "^1.2.0",
     "ag-grid-vue3": "^31.2.0",
+    "apexcharts": "^3.48.0",
     "axios": "^1.6.8",
+    "chart.js": "^4.4.2",
+    "d3": "^7.9.0",
     "mdi": "^2.2.43",
     "sass": "^1.74.1",
     "touch": "^3.1.0",
     "vite-plugin-full-reload": "^1.1.0",
     "vite-plugin-vuetify": "^2.0.3",
+    "vue-apexcharts": "^1.6.2",
+    "vue-chartjs": "^5.3.1",
+    "vue3-apexcharts": "^1.5.2",
     "vuetify": "^3.5.14"
   },
   "devDependencies": {

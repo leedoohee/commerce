@@ -25,6 +25,8 @@ Rails.application.routes.draw do
   
   get "categories/show" => "categories#show"
 
+  get "categories-chart" => "categories#show_daily_chart"
+
   get "expenses" => "expenses#index"
   
   get "login-v2"   => "login#index"

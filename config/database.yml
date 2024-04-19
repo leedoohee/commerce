@@ -4,7 +4,7 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   socket: /var/run/mysqld/mysqld.sock
   wait_timeout: 180
-  database: ecommerce
+  database: blog
   username: root
   password: 1234
   host: 127.0.0.1
