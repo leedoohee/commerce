@@ -201,7 +201,7 @@
           </v-row>
         </v-expansion-panel-title>
         <v-expansion-panel-text>
-          <v-radio-group v-model="options" inline>
+          <v-radio-group v-model="options" inline @change="onChangeOption">
             <v-radio
               label="단일옵션"
               value="singleOption"
@@ -234,57 +234,6 @@
                 </v-text-field>
               </v-col>
             </v-row>
-            <div>
-              <v-data-table
-                :headers="singleColDefs"
-                :items="singleItems"
-                @save="save"
-                @cancel="cancel"
-                @open="open"
-                @close="close"
-                item-key="name"
-                items-per-page="5"
-                class="elevation-1"
-              >
-                <template v-slot:items="props">
-                  <td class="text-xs-right">{{ props.item.option }}</td>
-                  <td>
-                    <v-edit-dialog
-                      :return-value.sync="props.item.quantity"
-                      lazy
-                    >
-                      {{ props.item.quantity }}
-                      <template v-slot:input>
-                        <v-text-field
-                          v-model="props.item.quantity"
-                          label="Edit"
-                          single-line
-                          counter
-                        ></v-text-field>
-                      </template>
-                    </v-edit-dialog>
-                  </td>
-                  <td>
-                    <v-edit-dialog :return-value.sync="props.item.price" lazy>
-                      {{ props.item.price }}
-                      <template v-slot:input>
-                        <v-text-field
-                          v-model="props.item.price"
-                          label="Edit"
-                          single-line
-                          counter
-                        ></v-text-field>
-                      </template>
-                    </v-edit-dialog>
-                  </td>
-                </template>
-              </v-data-table>
-
-              <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
-                {{ snackText }}
-                <v-btn flat @click="snack = false">Close</v-btn>
-              </v-snackbar>
-            </div>
           </template>
           <template v-if="options === 'matrixOption'">
             <v-row>
@@ -325,55 +274,10 @@
                 </v-text-field>
               </v-col>
             </v-row>
-            <!-- <v-data-table
-              :group-by="groupBy"
-              :headers="headers"
-              :items="desserts"
-              :sort-by="sortBy"
-              class="elevation-1"
-              item-value="name"
-              group-expand
-            >
-            </v-data-table> -->
-            <v-data-table
-              :headers="matrixColDefs"
-              :items="matrixItems"
-              item-key="name"
-              items-per-page="5"
-              class="elevation-1"
-            >
-              <template v-slot:items="props">
-                <td class="text-xs-right">{{ props.item.size }}</td>
-                <td class="text-xs-right">{{ props.item.color }}</td>
-                <td>
-                  <v-edit-dialog :return-value.sync="props.item.quantity" lazy>
-                    {{ props.item.quantity }}
-                    <template v-slot:input>
-                      <v-text-field
-                        v-model="props.item.quantity"
-                        label="Edit"
-                        single-line
-                        counter
-                      ></v-text-field>
-                    </template>
-                  </v-edit-dialog>
-                </td>
-                <td>
-                  <v-edit-dialog :return-value.sync="props.item.price" lazy>
-                    {{ props.item.price }}
-                    <template v-slot:input>
-                      <v-text-field
-                        v-model="props.item.price"
-                        label="Edit"
-                        single-line
-                        counter
-                      ></v-text-field>
-                    </template>
-                  </v-edit-dialog>
-                </td>
-              </template>
-            </v-data-table>
           </template>
+          <v-row>
+            <div ref="single_table"></div>
+          </v-row>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="secondary" variant="text"> UnLoad </v-btn>
@@ -402,81 +306,85 @@
 <script>
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
-import { AgGridVue } from "ag-grid-vue3";
+import { TabulatorFull as Tabulator } from "tabulator-tables"; //import Tabulator library
+import "tabulator-tables/dist/css/tabulator_semanticui.css";
 
 export default {
   name: "show",
   components: {
     QuillEditor,
-    AgGridVue,
   },
-  data: () => ({
-    sortBy: [{ key: "name" }],
-    groupBy: [{ key: "dairy" }],
-    snack: false,
-    snackColor: "",
-    snackText: "",
-    sizeData: ["S", "M", "L"],
-    colorData: ["Blue", "Black", "Red"],
-    categories: [
-      "상의 > 블라우스",
-      "상의 > 티셔츠",
-      "상의 > 니트",
-      "하의 > 슬랙스",
-      "하의 > 청바지",
-    ],
-    state: ["판매중", "품절", "판매중지"],
-    panel: [0, 1, 2, 3],
-    uploadDialog: false,
-    disabled: false,
-    expanded: true,
-
-    singleColDefs: [
-      {
-        title: "옵션",
-        align: "center",
-        value: "option",
+  data() {
+    return {
+      single_table: null,
+      matrix_table: null,
+      sizeData: ["S", "M", "L"],
+      colorData: ["Blue", "Black", "Red"],
+      categories: [
+        "상의 > 블라우스",
+        "상의 > 티셔츠",
+        "상의 > 니트",
+        "하의 > 슬랙스",
+        "하의 > 청바지",
+      ],
+      state: ["판매중", "품절", "판매중지"],
+      panel: [0, 1, 2, 3],
+      uploadDialog: false,
+      disabled: false,
+      expanded: true,
+      singleColDefs: [
+        {
+          title: "옵션",
+          field: "option",
+          hozAlign: "center",
+        },
+        { title: "재고", field: "quantity", editor: true, hozAlign: "center" },
+        { title: "추가가격", field: "price", editor: true, hozAlign: "center" },
+      ],
+      itemsPerPage: 5,
+      options: "singleOption",
+      optionData: ["S", "M", "L", "Red", "Blue", "Black"],
+      matrixItems: [],
+      singleItems: [],
+      uploadedFiles: [],
+      matrixColDefs: [
+        {
+          title: "옵션",
+          field: "option",
+          hozAlign: "center",
+          columns: [
+            { title: "사이즈", field: "size", hozAlign: "center" },
+            { title: "컬러", field: "color", hozAlign: "center" },
+          ],
+        },
+        { title: "재고", field: "quantity", editor: true, hozAlign: "center" },
+        { title: "추가가격", field: "price", editor: true, hozAlign: "center" },
+      ],
+    };
+  },
+  mounted() {
+    //instantiate Tabulator when element is mounted
+    this.single_table = new Tabulator(this.$refs.single_table, {
+      nestedFieldSeparator: "|",
+      height: 500, // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
+      data: this.singleItems, //assign data to table
+      layout: "fitColumns", //fit columns to width of table (optional)
+      pagination: true, //enable pagination
+      paginationMode: "remote", //enable remote pagination
+      ajaxURL: "", //set url for ajax request
+      dataReceiveParams: {
+        last_page: "max_pages", //change last_page parameter name to "max_pages"
       },
-      { title: "재고", align: "center", value: "quantity" },
-      { title: "추가가격", align: "center", value: "price" },
-    ],
-    itemsPerPage: 5,
-    options: "singleOption",
-    optionData: ["S", "M", "L", "Red", "Blue", "Black"],
-    matrixItems: [{ size: "S", color: "Red", quantity: 0, price: 0 }],
-    singleItems: [],
-    uploadedFiles: [],
-    matrixColDefs: [
-      {
-        title: "옵션",
-        align: "center",
-        children: [
-          { title: "사이즈", align: "center", value: "size" },
-          { title: "컬러", align: "center", value: "color" },
-        ],
-      },
-      { title: "재고", align: "center", value: "quantity" },
-      { title: "추가가격", align: "center", value: "price" },
-    ],
-  }),
+      columns: this.singleColDefs,
+    });
+  },
   methods: {
-    save() {
-      this.snack = true;
-      this.snackColor = "success";
-      this.snackText = "Data saved";
-    },
-    cancel() {
-      this.snack = true;
-      this.snackColor = "error";
-      this.snackText = "Canceled";
-    },
-    open() {
-      this.snack = true;
-      this.snackColor = "info";
-      this.snackText = "Dialog opened";
-    },
-    close() {
-      console.log("Dialog closed");
+    onChangeOption() {
+      this.options === "singleOption"
+        ? this.single_table.setColumns(this.singleColDefs)
+        : this.single_table.setColumns(this.matrixColDefs);
+
+      this.single_table.setData([]);
     },
     addOption() {
       this.optionData.push(this.size);
@@ -491,14 +399,15 @@ export default {
       this.color = "";
     },
     loadItems() {
+      const items = [];
       if (this.options === "singleOption") {
         for (const option of this.optionData) {
-          this.singleItems.push({ option: option, quantity: 0, price: 0 });
+          items.push({ option: option, quantity: 0, price: 0 });
         }
       } else {
         for (const size of this.sizeData) {
           for (const color of this.colorData) {
-            this.matrixItems.push({
+            items.push({
               size: size,
               color: color,
               quantity: 0,
@@ -507,6 +416,8 @@ export default {
           }
         }
       }
+
+      this.single_table.setData(items, true);
     },
     onSelectedFiles(event) {
       for (let i = 0; i < event.target.files.length; i++) {

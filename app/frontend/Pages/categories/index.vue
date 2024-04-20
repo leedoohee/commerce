@@ -139,6 +139,12 @@ export default {
       height: 500, // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
       data: this.tableData, //assign data to table
       layout: "fitColumns", //fit columns to width of table (optional)
+      pagination: true, //enable pagination
+      paginationMode: "remote", //enable remote pagination
+      ajaxURL: "", //set url for ajax request
+      dataReceiveParams: {
+        last_page: "max_pages", //change last_page parameter name to "max_pages"
+      },
       columns: [
         //Define Table Columns
         { title: "Name", field: "name", width: 150 },
