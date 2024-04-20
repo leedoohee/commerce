@@ -3,7 +3,7 @@
     <div class="align-center">
       <v-icon icon="mdi-list-box-outline"></v-icon> &nbsp;
       <span style="font-size: large; align-items: center; font-weight: bold"
-        >카테고리 관리</span
+        >상품관리</span
       >
     </div>
     <div>
@@ -11,6 +11,9 @@
       <div class="float-right">
         <v-btn><v-icon icon="mdi-reload"></v-icon></v-btn>
         <v-btn><v-icon icon="mdi-magnify"></v-icon></v-btn>
+        <v-btn @click="openProduct"
+          ><v-icon icon="mdi-plus-box-outline"></v-icon
+        ></v-btn>
       </div>
     </div>
     <br />
@@ -106,93 +109,38 @@ export default {
   data() {
     return {
       tabulator: null, //variable to hold your table
-      tableDataNested: [
+      tableData: [
+        { id: 1, name: "Oli Bob", age: "12", col: "red", dob: "" },
+        { id: 2, name: "Mary May", age: "1", col: "blue", dob: "14/05/1982" },
         {
-          name: "Oli Bob",
-          location: "United Kingdom",
-          gender: "male",
-          col: "red",
-          dob: "14/04/1984",
-          _children: [
-            {
-              name: "Mary May",
-              location: "Germany",
-              gender: "female",
-              col: "blue",
-              dob: "14/05/1982",
-            },
-            {
-              name: "Christine Lobowski",
-              location: "France",
-              gender: "female",
-              col: "green",
-              dob: "22/05/1982",
-            },
-            {
-              name: "Brendon Philips",
-              location: "USA",
-              gender: "male",
-              col: "orange",
-              dob: "01/08/1980",
-              _children: [
-                {
-                  name: "Margret Marmajuke",
-                  location: "Canada",
-                  gender: "female",
-                  col: "yellow",
-                  dob: "31/01/1999",
-                },
-                {
-                  name: "Frank Harbours",
-                  location: "Russia",
-                  gender: "male",
-                  col: "red",
-                  dob: "12/05/1966",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          name: "Jamie Newhart",
-          location: "India",
-          gender: "male",
+          id: 3,
+          name: "Christine Lobowski",
+          age: "42",
           col: "green",
-          dob: "14/05/1985",
-        },
-        {
-          name: "Gemma Jane",
-          location: "China",
-          gender: "female",
-          col: "red",
           dob: "22/05/1982",
-          _children: [
-            {
-              name: "Emily Sykes",
-              location: "South Korea",
-              gender: "female",
-              col: "maroon",
-              dob: "11/11/1970",
-            },
-          ],
         },
         {
-          name: "James Newman",
-          location: "Japan",
-          gender: "male",
-          col: "red",
-          dob: "22/03/1998",
+          id: 4,
+          name: "Brendon Philips",
+          age: "125",
+          col: "orange",
+          dob: "01/08/1980",
         },
-      ],
+        {
+          id: 5,
+          name: "Margret Marmajuke",
+          age: "16",
+          col: "yellow",
+          dob: "31/01/1999",
+        },
+      ], //data for table to display
     };
   },
   mounted() {
     //instantiate Tabulator when element is mounted
     this.tabulator = new Tabulator(this.$refs.table, {
       height: 500, // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
-      data: this.tableDataNested,
-      dataTree: true,
-      dataTreeStartExpanded: true,
+      data: this.tableData, //assign data to table
       layout: "fitColumns", //fit columns to width of table (optional)
       pagination: true, //enable pagination
       paginationMode: "remote", //enable remote pagination
@@ -201,19 +149,27 @@ export default {
         last_page: "max_pages", //change last_page parameter name to "max_pages"
       },
       columns: [
-        { title: "Name", field: "name", width: 200, responsive: 0 }, //never hide this column
-        { title: "Location", field: "location", width: 150 },
-        { title: "Gender", field: "gender", width: 150, responsive: 2 }, //hide this column first
-        { title: "Favourite Color", field: "col", width: 150 },
+        //Define Table Columns
+        { title: "Name", field: "name", width: 150 },
+        { title: "Age", field: "age", hozAlign: "left", formatter: "progress" },
+        { title: "Favourite Color", field: "col" },
         {
           title: "Date Of Birth",
           field: "dob",
-          hozAlign: "center",
           sorter: "date",
-          width: 150,
+          hozAlign: "center",
         },
       ],
     });
+  },
+  methods: {
+    openProduct() {
+      window.open(
+        "/products/show",
+        "_blank",
+        "width=1100, height=800, top=100, left=100, location=no, toolbar=no, menubar=no, status=no, scrollbars=no, resizable=no, fullscreen=no",
+      );
+    },
   },
 };
 </script>
@@ -222,5 +178,9 @@ export default {
 .select-box {
   height: 20px;
   width: 120px;
+}
+.inertia-link {
+  color: #000000;
+  text-decoration-line: none;
 }
 </style>

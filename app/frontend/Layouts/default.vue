@@ -13,39 +13,76 @@
         <v-divider></v-divider>
 
         <v-list density="compact" nav>
-          <v-list-item
-            class="customPrepend"
-            prepend-icon="mdi mdi-view-dashboard"
-            title="Dashboard"
-          ></v-list-item>
-
-          <v-list-group value="Users">
+          <v-list-group value="dashboard">
             <template v-slot:activator="{ props }">
               <v-list-item
                 class="customPrepend"
                 v-bind="props"
-                prepend-icon="mdi-account-circle"
-                title="Users"
+                prepend-icon="mdi-monitor-dashboard"
+                title="dashboard"
               ></v-list-item>
             </template>
-            <v-list-item
-              class="customPrepend"
-              prepend-icon="mdi-home-city"
-              title="Home"
-              value="home"
-            ></v-list-item>
-            <v-list-item
-              class="customPrepend"
-              prepend-icon="mdi-account"
-              title="My Account"
-              value="account"
-            ></v-list-item>
-            <v-list-item
-              class="customPrepend"
-              prepend-icon="mdi-account-group-outline"
-              title="Users"
-              value="users"
-            ></v-list-item>
+            <iLink
+              key="dashboard"
+              href="/dashboard"
+              role="navigation"
+              class="inertia-link"
+            >
+              <v-list-item
+                color="primary"
+                link
+                class="customPrepend"
+                title="dashboard"
+              ></v-list-item>
+            </iLink>
+          </v-list-group>
+
+          <v-list-group value="categories">
+            <template v-slot:activator="{ props }">
+              <v-list-item
+                class="customPrepend"
+                v-bind="props"
+                prepend-icon="mdi-gradient-horizontal"
+                title="categories"
+              ></v-list-item>
+            </template>
+            <iLink
+              key="Manage categories"
+              href="/categories"
+              role="navigation"
+              class="inertia-link"
+            >
+              <v-list-item
+                color="primary"
+                link
+                class="customPrepend"
+                title="manage categories"
+              ></v-list-item>
+            </iLink>
+          </v-list-group>
+
+          <v-list-group value="Products">
+            <template v-slot:activator="{ props }">
+              <v-list-item
+                class="customPrepend"
+                v-bind="props"
+                prepend-icon="mdi-shopping"
+                title="Products"
+              ></v-list-item>
+            </template>
+            <iLink
+              key="Manage Products"
+              href="/products"
+              role="navigation"
+              class="inertia-link"
+            >
+              <v-list-item
+                color="primary"
+                link
+                class="customPrepend"
+                title="manage Products"
+              ></v-list-item>
+            </iLink>
           </v-list-group>
         </v-list>
       </v-navigation-drawer>
@@ -90,44 +127,6 @@ import { ref, reactive } from "vue";
 const isOpen = ref(null);
 const drawer = ref(true);
 const rail = ref(true);
-const items = ref([
-  {
-    icon: "mdi mdi-monitor-dashboard",
-    title: "Dashboard",
-    route: "/dashboard",
-  },
-  { icon: "mdi mdi-star-circle", title: "Ratings" },
-  {
-    icon: "mdi mdi-account-group",
-    title: "Drivers",
-    subItems: [
-      { title: "Add Driver", route: "/drivers/add" },
-      { title: "Add Driver", route: "/drivers/add" },
-    ],
-  },
-  {
-    icon: "mdi mdi-account-star",
-    title: "Manager",
-    active: true,
-    route: "/managers",
-    subItems: [
-      { title: "Add Manager", route: "/managers/add" },
-      { title: "Managers", route: "/managers" },
-    ],
-  },
-  { icon: "mdi mdi-account", title: "Manage Users" },
-]);
-const open = ref(["Users"]);
-const admins = [
-  ["Management", "mdi-account-multiple-outline"],
-  ["Settings", "mdi-cog-outline"],
-];
-const cruds = [
-  ["Create", "mdi-plus-outline"],
-  ["Read", "mdi-file-outline"],
-  ["Update", "mdi-update"],
-  ["Delete", "mdi-delete"],
-];
 </script>
 
 <style scoped>
@@ -137,5 +136,9 @@ const cruds = [
 .customPrepend :deep(.v-list-item__prepend .v-list-item__spacer) {
   width: 8px;
   margin-left: 0;
+}
+.inertia-link {
+  color: #000000;
+  text-decoration-line: none;
 }
 </style>

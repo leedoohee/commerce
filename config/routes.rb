@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   defaults export: true do
     resources :expenses
     resources :categories
+    resources :products
     resources :users
   end
 
@@ -24,6 +25,10 @@ Rails.application.routes.draw do
   get "categories" => "categories#index"
   
   get "categories/show" => "categories#show"
+
+  get "products" => "products#index"
+  
+  get "products/show" => "products#show"
 
   get "dashboard" => "dashboard#index"
 
