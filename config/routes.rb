@@ -25,7 +25,7 @@ Rails.application.routes.draw do
   
   get "categories/show" => "categories#show"
 
-  get "categories-chart" => "categories#show_daily_chart"
+  get "dashboard" => "dashboard#index"
 
   get "expenses" => "expenses#index"
   

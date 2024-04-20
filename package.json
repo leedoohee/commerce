@@ -13,6 +13,7 @@
     "d3": "^7.9.0",
     "mdi": "^2.2.43",
     "sass": "^1.74.1",
+    "tabulator-tables": "^6.2.0",
     "touch": "^3.1.0",
     "vite-plugin-full-reload": "^1.1.0",
     "vite-plugin-vuetify": "^2.0.3",
@@ -22,6 +23,7 @@
     "vuetify": "^3.5.14"
   },
   "devDependencies": {
+    "@types/tabulator-tables": "^6.2.0",
     "prettier": "3.2.5",
     "vite": "^5.0.0",
     "vite-plugin-ruby": "^5.0.0"

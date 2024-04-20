@@ -46,28 +46,51 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-spacer></v-spacer>
-      <v-spacer></v-spacer>
       <v-divider></v-divider>
     </v-row>
     <v-row>
-      <v-col class="d-flex align-center" cols="12" sm="6">
-        <v-card elevation="4" style="width: 100%; height: 100%">
+      <v-col class="d-flex align-center" cols="6" sm="6">
+        <v-card elevation="4" style="width: 100%">
           <apexchart
-            type="treemap"
+            type="line"
             style="margin-top: 35px; width: 100%; height: 100%"
-            :options="chartOptions"
-            :series="series"
+            :options="chartOptions_v3"
+            :series="series_v3"
           ></apexchart>
         </v-card>
       </v-col>
-      <v-col class="d-flex align-center" cols="12" sm="6">
-        <v-card elevation="4" style="width: 100%; height: 100%">
+      <v-col class="d-flex align-center" cols="6" sm="6">
+        <v-card elevation="4" style="width: 100%">
+          <apexchart
+            type="bar"
+            style="margin-top: 35px; width: 100%; height: 100%"
+            :options="chartOptions_v4"
+            :series="series_v4"
+          ></apexchart>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-divider></v-divider>
+    </v-row>
+    <v-row>
+      <v-col class="d-flex align-center" cols="6" sm="6">
+        <v-card elevation="4" style="width: 100%">
           <apexchart
             type="area"
             style="margin-top: 35px; width: 100%; height: 100%"
             :options="chartOptions_v2"
             :series="series_v2"
+          ></apexchart>
+        </v-card>
+      </v-col>
+      <v-col class="d-flex align-center" cols="6" sm="6">
+        <v-card elevation="4" style="width: 100%">
+          <apexchart
+            type="treemap"
+            style="margin-top: 35px; width: 100%; height: 100%"
+            :options="chartOptions"
+            :series="series"
           ></apexchart>
         </v-card>
       </v-col>
@@ -185,6 +208,123 @@ export default {
         x: {
           format: "dd/MM/yy HH:mm",
         },
+      },
+    },
+    series_v3: [
+      {
+        name: "Website Blog",
+        type: "column",
+        data: [440, 505, 414, 671, 227, 413, 201, 352, 752, 320, 257, 160],
+      },
+      {
+        name: "Social Media",
+        type: "line",
+        data: [23, 42, 35, 27, 43, 22, 17, 31, 22, 22, 12, 16],
+      },
+    ],
+    chartOptions_v3: {
+      chart: {
+        height: 350,
+        type: "line",
+      },
+      stroke: {
+        width: [0, 4],
+      },
+      title: {
+        text: "Traffic Sources",
+      },
+      dataLabels: {
+        enabled: true,
+        enabledOnSeries: [1],
+      },
+      labels: [
+        "01 Jan 2001",
+        "02 Jan 2001",
+        "03 Jan 2001",
+        "04 Jan 2001",
+        "05 Jan 2001",
+        "06 Jan 2001",
+        "07 Jan 2001",
+        "08 Jan 2001",
+        "09 Jan 2001",
+        "10 Jan 2001",
+        "11 Jan 2001",
+        "12 Jan 2001",
+      ],
+      xaxis: {
+        type: "datetime",
+      },
+      yaxis: [
+        {
+          title: {
+            text: "Website Blog",
+          },
+        },
+        {
+          opposite: true,
+          title: {
+            text: "Social Media",
+          },
+        },
+      ],
+    },
+    series_v4: [
+      {
+        name: "",
+        data: [200, 330, 548, 740, 880, 990, 1100, 1380],
+      },
+    ],
+    chartOptions_v4: {
+      chart: {
+        type: "bar",
+        height: 350,
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 0,
+          horizontal: true,
+          distributed: true,
+          barHeight: "80%",
+          isFunnel: true,
+        },
+      },
+      colors: [
+        "#F44F5E",
+        "#E55A89",
+        "#D863B1",
+        "#CA6CD8",
+        "#B57BED",
+        "#8D95EB",
+        "#62ACEA",
+        "#4BC3E6",
+      ],
+      dataLabels: {
+        enabled: true,
+        formatter: function (val, opt) {
+          return opt.w.globals.labels[opt.dataPointIndex];
+        },
+        dropShadow: {
+          enabled: true,
+        },
+      },
+      title: {
+        text: "Pyramid Chart",
+        align: "middle",
+      },
+      xaxis: {
+        categories: [
+          "Sweets",
+          "Processed Foods",
+          "Healthy Fats",
+          "Meat",
+          "Beans & Legumes",
+          "Dairy",
+          "Fruits & Vegetables",
+          "Grains",
+        ],
+      },
+      legend: {
+        show: false,
       },
     },
     bandwidth: [5, 2, 5, 9, 5, 10, 3, 5, 3, 7, 1, 8, 2, 9, 6],

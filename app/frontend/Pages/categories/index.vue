@@ -94,88 +94,68 @@
       <v-spacer></v-spacer>
       <v-divider></v-divider>
     </v-row>
-    <ag-grid-vue
-      :rowData="items"
-      :columnDefs="colDefs"
-      style="height: 500px"
-      class="ag-theme-quartz"
-    ></ag-grid-vue>
+    <v-row>
+      <div ref="table"></div>
+    </v-row>
   </v-container>
 </template>
-
 <script>
-import { ref, defineProps, reactive } from "vue";
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-quartz.css";
-import { AgGridVue } from "ag-grid-vue3";
-
+import { TabulatorFull as Tabulator } from "tabulator-tables"; //import Tabulator library
+import "tabulator-tables/dist/css/tabulator_semanticui.css";
 export default {
-  name: "Categories",
-  components: {
-    AgGridVue,
-  },
-  setup() {
-    defineProps("categories");
-
-    const search = ref("");
-    const items = reactive([
-      {
-        name: "Nebula GTX 3080",
-        image: "1.png",
-        price: 699.99,
-        rating: 5,
-        stock: true,
-      },
-      {
-        name: "Galaxy RTX 3080",
-        image: "2.png",
-        price: 799.99,
-        rating: 4,
-        stock: false,
-      },
-      {
-        name: "Orion RX 6800 XT",
-        image: "3.png",
-        price: 649.99,
-        rating: 3,
-        stock: true,
-      },
-      {
-        name: "Vortex RTX 3090",
-        image: "4.png",
-        price: 1499.99,
-        rating: 4,
-        stock: true,
-      },
-      {
-        name: "Cosmos GTX 1660 Super",
-        image: "5.png",
-        price: 299.99,
-        rating: 4,
-        stock: false,
-      },
-    ]);
-
-    const colDefs = ref([
-      {
-        field: "name",
-        cellRenderer: function (param) {
-          return `<a href="#" onclick="window.open('/categories/show', '_blank', 'width=1200, height=900'); return false;">${param.value}</a>`;
-        },
-      },
-      { field: "image" },
-      { field: "price" },
-      { field: "rating" },
-      { field: "stock" },
-    ]);
-
+  data() {
     return {
-      items,
-      colDefs,
+      tabulator: null, //variable to hold your table
+      tableData: [
+        { id: 1, name: "Oli Bob", age: "12", col: "red", dob: "" },
+        { id: 2, name: "Mary May", age: "1", col: "blue", dob: "14/05/1982" },
+        {
+          id: 3,
+          name: "Christine Lobowski",
+          age: "42",
+          col: "green",
+          dob: "22/05/1982",
+        },
+        {
+          id: 4,
+          name: "Brendon Philips",
+          age: "125",
+          col: "orange",
+          dob: "01/08/1980",
+        },
+        {
+          id: 5,
+          name: "Margret Marmajuke",
+          age: "16",
+          col: "yellow",
+          dob: "31/01/1999",
+        },
+      ], //data for table to display
     };
+  },
+  mounted() {
+    //instantiate Tabulator when element is mounted
+    this.tabulator = new Tabulator(this.$refs.table, {
+      height: 500, // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
+      data: this.tableData, //assign data to table
+      layout: "fitColumns", //fit columns to width of table (optional)
+      columns: [
+        //Define Table Columns
+        { title: "Name", field: "name", width: 150 },
+        { title: "Age", field: "age", hozAlign: "left", formatter: "progress" },
+        { title: "Favourite Color", field: "col" },
+        {
+          title: "Date Of Birth",
+          field: "dob",
+          sorter: "date",
+          hozAlign: "center",
+        },
+      ],
+    });
   },
 };
 </script>
+
 <style lang="scss">
 .select-box {
   height: 20px;

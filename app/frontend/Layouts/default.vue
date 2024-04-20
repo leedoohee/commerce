@@ -91,7 +91,11 @@ const isOpen = ref(null);
 const drawer = ref(true);
 const rail = ref(true);
 const items = ref([
-  { icon: "mdi mdi-monitor-dashboard", title: "Dashboard" },
+  {
+    icon: "mdi mdi-monitor-dashboard",
+    title: "Dashboard",
+    route: "/dashboard",
+  },
   { icon: "mdi mdi-star-circle", title: "Ratings" },
   {
     icon: "mdi mdi-account-group",
