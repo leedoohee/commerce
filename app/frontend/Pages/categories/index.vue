@@ -11,6 +11,9 @@
       <div class="float-right">
         <v-btn><v-icon icon="mdi-reload"></v-icon></v-btn>
         <v-btn><v-icon icon="mdi-magnify"></v-icon></v-btn>
+        <v-btn @click="openCategory"
+          ><v-icon icon="mdi-plus-box-outline"></v-icon
+        ></v-btn>
       </div>
     </div>
     <br />
@@ -214,6 +217,15 @@ export default {
         },
       ],
     });
+  },
+  methods: {
+    openCategory() {
+      window.open(
+        "/categories/show",
+        "_blank",
+        "width=1100, height=360, top=100, left=100, location=no, toolbar=no, menubar=no, status=no, scrollbars=no, resizable=no, fullscreen=no",
+      );
+    },
   },
 };
 </script>

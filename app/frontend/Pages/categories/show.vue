@@ -3,7 +3,7 @@
     <v-toolbar color="green-accent-1">
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
-      <v-toolbar-title>상품관리</v-toolbar-title>
+      <v-toolbar-title>카테고리</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
@@ -19,288 +19,71 @@
         <v-icon>mdi-dots-vertical</v-icon>
       </v-btn>
     </v-toolbar>
-    <v-expansion-panels v-model="panel" :disabled="disabled">
-      <v-expansion-panel>
-        <v-expansion-panel-title>
-          <v-row no-gutters>
-            <v-col class="d-flex justify-start" cols="4"> 이미지 </v-col>
-          </v-row>
-        </v-expansion-panel-title>
-        <v-expansion-panel-text>
-          <v-card
-            class="mx-auto"
-            elevation="10"
-            max-width="700"
-            max-height="700"
-          >
-            <v-carousel v-if="uploadedFiles.length == 0" show-arrows="hover">
-            </v-carousel>
-            <v-carousel v-if="uploadedFiles.length > 0" show-arrows="hover">
-              <template v-for="(item, i) in uploadedFiles" :key="i">
-                <v-carousel-item
-                  :src="item.url"
-                  aspect-ratio="1"
-                ></v-carousel-item>
-              </template>
-            </v-carousel>
-          </v-card>
-        </v-expansion-panel-text>
-        <v-expansion-panel-text>
-          <v-file-input
-            accept="image/*"
-            multiple
-            color="green-accent-1"
-            label="이미지 파일"
-            density="compact"
-            variant="solo"
-            @change.prevent="onSelectedFiles($event)"
-          ></v-file-input>
-        </v-expansion-panel-text>
-      </v-expansion-panel>
-
-      <v-expansion-panel>
-        <v-expansion-panel-title>
-          <v-row no-gutters>
-            <v-col class="d-flex justify-start" cols="4"> 상세정보 </v-col>
-          </v-row>
-        </v-expansion-panel-title>
-        <v-expansion-panel-text>
-          <v-row>
-            <v-col cols="12" sm="12" style="height: 65px">
-              <v-text-field
-                label="상품명"
-                variant="outlined"
-                density="compact"
-                color="green-accent-1"
-                v-model="name"
-              >
-              </v-text-field>
-            </v-col>
-          </v-row>
-
-          <v-row>
-            <v-col cols="12" sm="12" style="height: 65px">
-              <v-select
-                label="카테고리"
-                variant="outlined"
-                density="compact"
-                color="green-accent-1"
-                :items="categories"
-              >
-              </v-select>
-            </v-col>
-          </v-row>
-
-          <v-row>
-            <v-col cols="12" sm="5" style="height: 65px">
-              <v-select
-                label="상품상태"
-                variant="outlined"
-                density="compact"
-                color="green-accent-1"
-                :items="state"
-              >
-              </v-select>
-            </v-col>
-            <v-col cols="12" sm="1" style="height: 65px">
-              <v-btn
-                color="green-accent-1"
-                variant="plain"
-                rounded="lg"
-                style="width: 100px; height: 42px"
-                density="compact"
-                icon="mdi-check"
-              ></v-btn>
-            </v-col>
-            <v-col cols="12" sm="6" style="height: 65px">
-              <v-text-field
-                label="스타일넘버"
-                variant="outlined"
-                density="compact"
-                color="green-accent-1"
-              >
-              </v-text-field>
-            </v-col>
-          </v-row>
-
-          <v-row>
-            <v-col cols="12" sm="6" style="height: 65px">
-              <v-text-field
-                label="판매가"
-                variant="outlined"
-                density="compact"
-                color="green-accent-1"
-                suffix="원"
-              >
-              </v-text-field>
-            </v-col>
-            <v-col cols="12" sm="6" style="height: 65px">
-              <v-text-field
-                label="원가"
-                variant="outlined"
-                density="compact"
-                color="green-accent-1"
-                suffix="원"
-              >
-              </v-text-field>
-            </v-col>
-          </v-row>
-
-          <v-row>
-            <v-col cols="12" sm="6" style="height: 65px">
-              <v-text-field
-                label="마진율"
-                variant="outlined"
-                density="compact"
-                color="green-accent-1"
-                suffix="%"
-              >
-              </v-text-field>
-            </v-col>
-
-            <v-col cols="12" sm="6" style="height: 65px">
-              <v-select
-                label="과세"
-                variant="outlined"
-                density="compact"
-                color="green-accent-1"
-                :items="['과세', '면세']"
-              >
-              </v-select>
-            </v-col>
-          </v-row>
-
-          <v-row>
-            <v-col cols="12" sm="6" style="height: 80px">
-              <v-text-field
-                label="제조사"
-                variant="outlined"
-                density="compact"
-                color="green-accent-1"
-              >
-              </v-text-field>
-            </v-col>
-
-            <v-col cols="12" sm="6" style="height: 80px">
-              <v-text-field
-                label="원산지"
-                variant="outlined"
-                density="compact"
-                color="green-accent-1"
-              >
-              </v-text-field>
-            </v-col>
-          </v-row>
-        </v-expansion-panel-text>
-      </v-expansion-panel>
-
-      <v-expansion-panel>
-        <v-expansion-panel-title>
-          <v-row no-gutters>
-            <v-col class="d-flex justify-start" cols="4"> 옵션 </v-col>
-          </v-row>
-        </v-expansion-panel-title>
-        <v-expansion-panel-text>
-          <v-radio-group v-model="options" inline @change="onChangeOption">
-            <v-radio
-              label="단일옵션"
-              value="singleOption"
+    <v-table class="category_table">
+      <thead>
+        <tr>
+          <td>기본정보</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="1" style="background-color: #b9f6ca">코드</td>
+          <td colspan="2">001</td>
+          <td colspan="1" style="background-color: #b9f6ca">상위 카테고리</td>
+          <td colspan="2">
+            <v-select
+              label="카테고리"
+              variant="outlined"
+              density="compact"
               color="green-accent-1"
-            ></v-radio>
-            <v-radio
-              label="조합옵션"
-              value="matrixOption"
-              color="green-accent-1"
-            ></v-radio>
-          </v-radio-group>
-          <template v-if="options === 'singleOption'">
+              :items="categories"
+            >
+            </v-select>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="1" style="background-color: #b9f6ca">카테고리명</td>
+          <td colspan="2">
             <v-row>
-              <v-col cols="12" sm="6">
+              <v-col>
                 <v-text-field
-                  label="옵션"
+                  label="카테고리명"
                   variant="outlined"
-                  color="green-accent-1"
                   density="compact"
-                  v-model="size"
-                  @keydown.enter="addSize"
+                  color="green-accent-1"
                 >
-                  <template v-slot:prepend-inner>
-                    <div v-for="(optionText, index) in optionData" :key="index">
-                      <v-chip color="green-accent-1" closable>{{
-                        optionText
-                      }}</v-chip>
-                    </div>
-                  </template>
                 </v-text-field>
               </v-col>
             </v-row>
-          </template>
-          <template v-if="options === 'matrixOption'">
-            <v-row>
-              <v-col cols="12" sm="6">
-                <v-text-field
-                  label="사이즈"
-                  variant="outlined"
-                  color="green-accent-1"
-                  density="compact"
-                  v-model="size"
-                  @keydown.enter="addSize"
-                >
-                  <template v-slot:prepend-inner>
-                    <div v-for="(sizeText, index) in sizeData" :key="index">
-                      <v-chip color="green-accent-1" closable>{{
-                        sizeText
-                      }}</v-chip>
-                    </div>
-                  </template>
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-text-field
-                  label="컬러"
-                  variant="outlined"
-                  color="green-accent-1"
-                  density="compact"
-                  v-model="color"
-                  @keydown.enter="addColor"
-                >
-                  <template v-slot:prepend-inner>
-                    <div v-for="(colorText, index) in colorData" :key="index">
-                      <v-chip color="green-accent-1" closable>{{
-                        colorText
-                      }}</v-chip>
-                    </div>
-                  </template>
-                </v-text-field>
-              </v-col>
-            </v-row>
-          </template>
-          <v-row>
-            <div ref="single_table"></div>
-          </v-row>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="secondary" variant="text"> UnLoad </v-btn>
-            <v-btn color="primary" variant="text" @click="loadItems">
-              Load
-            </v-btn>
-          </v-card-actions>
-        </v-expansion-panel-text>
-      </v-expansion-panel>
-
-      <v-expansion-panel>
-        <v-expansion-panel-title>
-          <v-row no-gutters>
-            <v-col class="d-flex justify-start" cols="4"> 상세이미지 </v-col>
-          </v-row>
-        </v-expansion-panel-title>
-        <v-expansion-panel-text>
-          <v-card>
-            <QuillEditor theme="snow" style="height: 500px" />
-          </v-card>
-        </v-expansion-panel-text>
-      </v-expansion-panel>
-    </v-expansion-panels>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="1" style="background-color: #b9f6ca">사용여부</td>
+          <td colspan="2">
+            <v-radio-group inline>
+              <v-radio
+                label="사용"
+                value="singleOption"
+                color="green-accent-1"
+              ></v-radio>
+              <v-radio
+                label="미사용"
+                value="matrixOption"
+                color="green-accent-1"
+              ></v-radio>
+            </v-radio-group>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="1" style="background-color: #b9f6ca">등록자</td>
+          <td colspan="1">dooheelee</td>
+          <td colspan="1" style="background-color: #b9f6ca">등록일시</td>
+          <td colspan="1">2024-04-21 11:24:32</td>
+          <td colspan="1" style="background-color: #b9f6ca">수정일시</td>
+          <td colspan="1">2024-04-21 11:24:32</td>
+        </tr>
+      </tbody>
+    </v-table>
   </container>
 </template>
 <script>
@@ -320,13 +103,7 @@ export default {
       matrix_table: null,
       sizeData: ["S", "M", "L"],
       colorData: ["Blue", "Black", "Red"],
-      categories: [
-        "상의 > 블라우스",
-        "상의 > 티셔츠",
-        "상의 > 니트",
-        "하의 > 슬랙스",
-        "하의 > 청바지",
-      ],
+      categories: ["상의", "하의", "신발", "악세사리"],
       state: ["판매중", "품절", "판매중지"],
       panel: [0, 1, 2, 3],
       uploadDialog: false,
@@ -430,3 +207,8 @@ export default {
   },
 };
 </script>
+<style>
+.category_table table tr td {
+  border-bottom: none !important;
+}
+</style>
