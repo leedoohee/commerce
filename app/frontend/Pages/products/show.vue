@@ -1,6 +1,6 @@
 <template>
   <container>
-    <v-toolbar color="green-accent-1">
+    <v-toolbar color="#b9f6ca">
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
       <v-toolbar-title>상품관리</v-toolbar-title>
@@ -65,132 +65,155 @@
           </v-row>
         </v-expansion-panel-title>
         <v-expansion-panel-text>
-          <v-row>
-            <v-col cols="12" sm="12" style="height: 65px">
-              <v-text-field
-                label="상품명"
-                variant="outlined"
-                density="compact"
-                color="green-accent-1"
-                v-model="name"
-              >
-              </v-text-field>
-            </v-col>
-          </v-row>
-
-          <v-row>
-            <v-col cols="12" sm="12" style="height: 65px">
-              <v-select
-                label="카테고리"
-                variant="outlined"
-                density="compact"
-                color="green-accent-1"
-                :items="categories"
-              >
-              </v-select>
-            </v-col>
-          </v-row>
-
-          <v-row>
-            <v-col cols="12" sm="5" style="height: 65px">
-              <v-select
-                label="상품상태"
-                variant="outlined"
-                density="compact"
-                color="green-accent-1"
-                :items="state"
-              >
-              </v-select>
-            </v-col>
-            <v-col cols="12" sm="1" style="height: 65px">
-              <v-btn
-                color="green-accent-1"
-                variant="plain"
-                rounded="lg"
-                style="width: 100px; height: 42px"
-                density="compact"
-                icon="mdi-check"
-              ></v-btn>
-            </v-col>
-            <v-col cols="12" sm="6" style="height: 65px">
-              <v-text-field
-                label="스타일넘버"
-                variant="outlined"
-                density="compact"
-                color="green-accent-1"
-              >
-              </v-text-field>
-            </v-col>
-          </v-row>
-
-          <v-row>
-            <v-col cols="12" sm="6" style="height: 65px">
-              <v-text-field
-                label="판매가"
-                variant="outlined"
-                density="compact"
-                color="green-accent-1"
-                suffix="원"
-              >
-              </v-text-field>
-            </v-col>
-            <v-col cols="12" sm="6" style="height: 65px">
-              <v-text-field
-                label="원가"
-                variant="outlined"
-                density="compact"
-                color="green-accent-1"
-                suffix="원"
-              >
-              </v-text-field>
-            </v-col>
-          </v-row>
-
-          <v-row>
-            <v-col cols="12" sm="6" style="height: 65px">
-              <v-text-field
-                label="마진율"
-                variant="outlined"
-                density="compact"
-                color="green-accent-1"
-                suffix="%"
-              >
-              </v-text-field>
-            </v-col>
-
-            <v-col cols="12" sm="6" style="height: 65px">
-              <v-select
-                label="과세"
-                variant="outlined"
-                density="compact"
-                color="green-accent-1"
-                :items="['과세', '면세']"
-              >
-              </v-select>
-            </v-col>
-          </v-row>
-
-          <v-row>
-            <v-col cols="12" sm="6" style="height: 80px">
-              <v-text-field
-                label="제조사"
-                variant="outlined"
-                density="compact"
-                color="green-accent-1"
-              >
-              </v-text-field>
-            </v-col>
-
-            <v-col cols="12" sm="6" style="height: 80px">
-              <v-text-field
-                label="원산지"
-                variant="outlined"
-                density="compact"
-                color="green-accent-1"
-              >
-              </v-text-field>
-            </v-col>
-          </v-row>
+          <v-table>
+            <tbody>
+              <tr>
+                <td colspan="1" style="background-color: #b9f6ca">상품명</td>
+                <td colspan="5">
+                  <v-text-field
+                    label="상품명"
+                    hide-details
+                    variant="outlined"
+                    density="compact"
+                    color="green-accent-1"
+                    v-model="name"
+                  >
+                  </v-text-field>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="1" style="background-color: #b9f6ca">
+                  카테고리명
+                </td>
+                <td colspan="5">
+                  <v-text-field
+                    hide-details
+                    label="카테고리명"
+                    variant="outlined"
+                    density="compact"
+                    color="green-accent-1"
+                    :items="categories"
+                  >
+                  </v-text-field>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="1" style="background-color: #b9f6ca">상품상태</td>
+                <td colspan="2">
+                  <v-row>
+                    <v-col sm="8">
+                      <v-select
+                        label="상품상태"
+                        hide-details
+                        variant="outlined"
+                        density="compact"
+                        color="green-accent-1"
+                        :items="state"
+                      >
+                      </v-select>
+                    </v-col>
+                    <v-col sm="2">
+                      <v-btn
+                        color="green-accent-1"
+                        style="width: 100px; height: 40px"
+                        >저장</v-btn
+                      >
+                    </v-col>
+                  </v-row>
+                </td>
+                <td colspan="1" style="background-color: #b9f6ca">
+                  스타일넘버
+                </td>
+                <td colspan="2">
+                  <v-text-field
+                    label="스타일넘버"
+                    hide-details
+                    variant="outlined"
+                    density="compact"
+                    color="green-accent-1"
+                  >
+                  </v-text-field>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="1" style="background-color: #b9f6ca">판매가</td>
+                <td colspan="2">
+                  <v-text-field
+                    label="판매가"
+                    hide-details
+                    variant="outlined"
+                    density="compact"
+                    color="green-accent-1"
+                    suffix="원"
+                  >
+                  </v-text-field>
+                </td>
+                <td colspan="1" style="background-color: #b9f6ca">원가</td>
+                <td colspan="2">
+                  <v-text-field
+                    label="원가"
+                    hide-details
+                    variant="outlined"
+                    density="compact"
+                    color="green-accent-1"
+                    suffix="원"
+                  >
+                  </v-text-field>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="1" style="background-color: #b9f6ca">마진율</td>
+                <td colspan="2">
+                  <v-text-field
+                    label="마진율"
+                    hide-details
+                    variant="outlined"
+                    density="compact"
+                    color="green-accent-1"
+                    suffix="%"
+                  >
+                  </v-text-field>
+                </td>
+                <td colspan="1" style="background-color: #b9f6ca">과세</td>
+                <td colspan="2">
+                  <v-select
+                    label="과세"
+                    hide-details
+                    variant="outlined"
+                    density="compact"
+                    color="green-accent-1"
+                    :items="['과세', '면세']"
+                  >
+                  </v-select>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="1" style="background-color: #b9f6ca">제조사</td>
+                <td colspan="2">
+                  <v-text-field
+                    label="제조사"
+                    hide-details
+                    variant="outlined"
+                    density="compact"
+                    color="green-accent-1"
+                  >
+                  </v-text-field>
+                </td>
+                <td colspan="1" style="background-color: #b9f6ca">원산지</td>
+                <td colspan="2">
+                  <v-text-field
+                    label="원산지"
+                    hide-details
+                    variant="outlined"
+                    density="compact"
+                    color="green-accent-1"
+                  >
+                  </v-text-field>
+                </td>
+              </tr>
+            </tbody>
+          </v-table>
+          <v-divider></v-divider>
         </v-expansion-panel-text>
       </v-expansion-panel>
 
