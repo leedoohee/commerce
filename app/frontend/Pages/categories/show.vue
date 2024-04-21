@@ -19,10 +19,11 @@
         <v-icon>mdi-dots-vertical</v-icon>
       </v-btn>
     </v-toolbar>
-    <v-table class="category_table">
+    <v-divider></v-divider>
+    <v-table>
       <thead>
         <tr>
-          <td>기본정보</td>
+          <td colspan="6">기본정보</td>
         </tr>
       </thead>
       <tbody>
@@ -32,35 +33,33 @@
           <td colspan="1" style="background-color: #b9f6ca">상위 카테고리</td>
           <td colspan="2">
             <v-select
+              hide-details
               label="카테고리"
+              class="align-self-center"
               variant="outlined"
               density="compact"
               color="green-accent-1"
               :items="categories"
-            >
-            </v-select>
+            ></v-select>
           </td>
         </tr>
         <tr>
           <td colspan="1" style="background-color: #b9f6ca">카테고리명</td>
-          <td colspan="2">
-            <v-row>
-              <v-col>
-                <v-text-field
-                  label="카테고리명"
-                  variant="outlined"
-                  density="compact"
-                  color="green-accent-1"
-                >
-                </v-text-field>
-              </v-col>
-            </v-row>
+          <td colspan="5">
+            <v-text-field
+              hide-details
+              label="카테고리명"
+              variant="outlined"
+              density="compact"
+              color="green-accent-1"
+            >
+            </v-text-field>
           </td>
         </tr>
         <tr>
           <td colspan="1" style="background-color: #b9f6ca">사용여부</td>
-          <td colspan="2">
-            <v-radio-group inline>
+          <td colspan="5">
+            <v-radio-group inline hide-details>
               <v-radio
                 label="사용"
                 value="singleOption"
@@ -84,6 +83,7 @@
         </tr>
       </tbody>
     </v-table>
+    <v-divider></v-divider>
   </container>
 </template>
 <script>
@@ -207,8 +207,3 @@ export default {
   },
 };
 </script>
-<style>
-.category_table table tr td {
-  border-bottom: none !important;
-}
-</style>
