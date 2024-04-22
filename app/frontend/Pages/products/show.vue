@@ -19,7 +19,7 @@
         <v-icon>mdi-dots-vertical</v-icon>
       </v-btn>
     </v-toolbar>
-    <v-expansion-panels v-model="panel" :disabled="disabled">
+    <v-expansion-panels v-model="panel" :disabled="disabled" multiple>
       <v-expansion-panel>
         <v-expansion-panel-title>
           <v-row no-gutters>
@@ -223,7 +223,7 @@
             <v-col class="d-flex justify-start" cols="4"> 옵션 </v-col>
           </v-row>
         </v-expansion-panel-title>
-        <v-expansion-panel-text>
+        <v-expansion-panel-text eager>
           <v-radio-group v-model="options" inline @change="onChangeOption">
             <v-radio
               label="단일옵션"

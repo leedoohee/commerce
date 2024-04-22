@@ -84,6 +84,30 @@
               ></v-list-item>
             </iLink>
           </v-list-group>
+
+          <v-list-group value="Orders">
+            <template v-slot:activator="{ props }">
+              <v-list-item
+                class="customPrepend"
+                v-bind="props"
+                prepend-icon="mdi-order-bool-descending"
+                title="Orders"
+              ></v-list-item>
+            </template>
+            <iLink
+              key="Manage Orders"
+              href="/orders"
+              role="navigation"
+              class="inertia-link"
+            >
+              <v-list-item
+                color="primary"
+                link
+                class="customPrepend"
+                title="manage Orders"
+              ></v-list-item>
+            </iLink>
+          </v-list-group>
         </v-list>
       </v-navigation-drawer>
 

@@ -20,69 +20,77 @@
       </v-btn>
     </v-toolbar>
     <v-divider></v-divider>
-    <v-table>
-      <thead>
-        <tr>
-          <td colspan="6">기본정보</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td colspan="1" style="background-color: #b9f6ca">코드</td>
-          <td colspan="2">001</td>
-          <td colspan="1" style="background-color: #b9f6ca">상위 카테고리</td>
-          <td colspan="2">
-            <v-select
-              hide-details
-              label="카테고리"
-              class="align-self-center"
-              variant="outlined"
-              density="compact"
-              color="green-accent-1"
-              :items="categories"
-            ></v-select>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="1" style="background-color: #b9f6ca">카테고리명</td>
-          <td colspan="5">
-            <v-text-field
-              hide-details
-              label="카테고리명"
-              variant="outlined"
-              density="compact"
-              color="green-accent-1"
-            >
-            </v-text-field>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="1" style="background-color: #b9f6ca">사용여부</td>
-          <td colspan="5">
-            <v-radio-group inline hide-details>
-              <v-radio
-                label="사용"
-                value="singleOption"
-                color="green-accent-1"
-              ></v-radio>
-              <v-radio
-                label="미사용"
-                value="matrixOption"
-                color="green-accent-1"
-              ></v-radio>
-            </v-radio-group>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="1" style="background-color: #b9f6ca">등록자</td>
-          <td colspan="1">dooheelee</td>
-          <td colspan="1" style="background-color: #b9f6ca">등록일시</td>
-          <td colspan="1">2024-04-21 11:24:32</td>
-          <td colspan="1" style="background-color: #b9f6ca">수정일시</td>
-          <td colspan="1">2024-04-21 11:24:32</td>
-        </tr>
-      </tbody>
-    </v-table>
+    <v-expansion-panels v-model="panel" :disabled="disabled">
+      <v-expansion-panel>
+        <v-expansion-panel-title>
+          <v-row no-gutters>
+            <v-col class="d-flex justify-start" cols="4"> 기본정보 </v-col>
+          </v-row>
+        </v-expansion-panel-title>
+        <v-expansion-panel-text>
+          <v-table>
+            <thead>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="1" style="background-color: #b9f6ca">코드</td>
+                <td colspan="2">001</td>
+                <td colspan="1" style="background-color: #b9f6ca">상위 카테고리</td>
+                <td colspan="2">
+                  <v-select
+                    hide-details
+                    label="카테고리"
+                    class="align-self-center"
+                    variant="outlined"
+                    density="compact"
+                    color="green-accent-1"
+                    :items="categories"
+                  ></v-select>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="1" style="background-color: #b9f6ca">카테고리명</td>
+                <td colspan="5">
+                  <v-text-field
+                    hide-details
+                    label="카테고리명"
+                    variant="outlined"
+                    density="compact"
+                    color="green-accent-1"
+                  >
+                  </v-text-field>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="1" style="background-color: #b9f6ca">사용여부</td>
+                <td colspan="5">
+                  <v-radio-group inline hide-details>
+                    <v-radio
+                      label="사용"
+                      value="singleOption"
+                      color="green-accent-1"
+                    ></v-radio>
+                    <v-radio
+                      label="미사용"
+                      value="matrixOption"
+                      color="green-accent-1"
+                    ></v-radio>
+                  </v-radio-group>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="1" style="background-color: #b9f6ca">등록자</td>
+                <td colspan="1">dooheelee</td>
+                <td colspan="1" style="background-color: #b9f6ca">등록일시</td>
+                <td colspan="1">2024-04-21 11:24:32</td>
+                <td colspan="1" style="background-color: #b9f6ca">수정일시</td>
+                <td colspan="1">2024-04-21 11:24:32</td>
+              </tr>
+            </tbody>
+          </v-table>
+        </v-expansion-panel-text>
+      </v-expansion-panel>
+    </v-expansion-panels>
     <v-divider></v-divider>
   </container>
 </template>

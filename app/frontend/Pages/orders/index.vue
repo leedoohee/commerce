@@ -3,7 +3,7 @@
     <div class="align-center">
       <v-icon icon="mdi-list-box-outline"></v-icon> &nbsp;
       <span style="font-size: large; align-items: center; font-weight: bold"
-        >카테고리 관리</span
+        >주문관리</span
       >
     </div>
     <div>
@@ -11,7 +11,7 @@
       <div class="float-right">
         <v-btn><v-icon icon="mdi-reload"></v-icon></v-btn>
         <v-btn><v-icon icon="mdi-magnify"></v-icon></v-btn>
-        <v-btn @click="openCategory"
+        <v-btn @click="openProduct"
           ><v-icon icon="mdi-plus-box-outline"></v-icon
         ></v-btn>
       </div>
@@ -109,93 +109,70 @@ export default {
   data() {
     return {
       tabulator: null, //variable to hold your table
-      tableDataNested: [
+      tableData: [
         {
-          name: "Oli Bob",
-          location: "United Kingdom",
-          gender: "male",
-          col: "red",
-          dob: "14/04/1984",
-          _children: [
-            {
-              name: "Mary May",
-              location: "Germany",
-              gender: "female",
-              col: "blue",
-              dob: "14/05/1982",
-            },
-            {
-              name: "Christine Lobowski",
-              location: "France",
-              gender: "female",
-              col: "green",
-              dob: "22/05/1982",
-            },
-            {
-              name: "Brendon Philips",
-              location: "USA",
-              gender: "male",
-              col: "orange",
-              dob: "01/08/1980",
-              _children: [
-                {
-                  name: "Margret Marmajuke",
-                  location: "Canada",
-                  gender: "female",
-                  col: "yellow",
-                  dob: "31/01/1999",
-                },
-                {
-                  name: "Frank Harbours",
-                  location: "Russia",
-                  gender: "male",
-                  col: "red",
-                  dob: "12/05/1966",
-                },
-              ],
-            },
-          ],
+          order_id: "1",
+          order_state: "주문완료",
+          order_date: "2024-04-21",
+          order_name: "이두희",
+          order_quantity: "1",
+          order_price: "100,000",
+          order_product: "상품1",
+          order_phone: "010-1234-5678",
+          order_memo: "메모1",
         },
         {
-          name: "Jamie Newhart",
-          location: "India",
-          gender: "male",
-          col: "green",
-          dob: "14/05/1985",
+          order_id: "2",
+          order_state: "주문완료",
+          order_date: "2024-04-21",
+          order_name: "이두희",
+          order_quantity: "1",
+          order_price: "100,000",
+          order_product: "상품2",
+          order_phone: "010-1234-5678",
+          order_memo: "메모2",
         },
         {
-          name: "Gemma Jane",
-          location: "China",
-          gender: "female",
-          col: "red",
-          dob: "22/05/1982",
-          _children: [
-            {
-              name: "Emily Sykes",
-              location: "South Korea",
-              gender: "female",
-              col: "maroon",
-              dob: "11/11/1970",
-            },
-          ],
+          order_id: "3",
+          order_state: "주문완료",
+          order_date: "2024-04-21",
+          order_name: "이두희",
+          order_quantity: "1",
+          order_price: "100,000",
+          order_product: "상품3",
+          order_phone: "010-1234-5678",
+          order_memo: "메모3",
         },
         {
-          name: "James Newman",
-          location: "Japan",
-          gender: "male",
-          col: "red",
-          dob: "22/03/1998",
+          order_id: "4",
+          order_state: "주문완료",
+          order_date: "2024-04-21",
+          order_name: "이두희",
+          order_quantity: "1",
+          order_price: "100,000",
+          order_product: "상품4",
+          order_phone: "010-1234-5678",
+          order_memo: "메모4",
         },
-      ],
+        {
+          order_id: "5",
+          order_state: "주문완료",
+          order_date: "2024-04-21",
+          order_name: "이두희",
+          order_quantity: "1",
+          order_price: "100,000",
+          order_product: "상품5",
+          order_phone: "010-1234-5678",
+          order_memo: "메모5",
+        }
+      ], //data for table to display
     };
   },
   mounted() {
     //instantiate Tabulator when element is mounted
     this.tabulator = new Tabulator(this.$refs.table, {
       height: 500, // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
-      data: this.tableDataNested,
-      dataTree: true,
-      dataTreeStartExpanded: true,
+      data: this.tableData, //assign data to table
       layout: "fitColumns", //fit columns to width of table (optional)
       pagination: true, //enable pagination
       paginationMode: "remote", //enable remote pagination
@@ -204,28 +181,35 @@ export default {
         last_page: "max_pages", //change last_page parameter name to "max_pages"
       },
       columns: [
-        { title: "Name", field: "name", width: 200, responsive: 0 }, //never hide this column
-        { title: "Location", field: "location", width: 150 },
-        { title: "Gender", field: "gender", width: 150, responsive: 2 }, //hide this column first
-        { title: "Favourite Color", field: "col", width: 150 },
-        {
-          title: "Date Of Birth",
-          field: "dob",
-          hozAlign: "center",
-          sorter: "date",
-          width: 150,
-        },
+        //Define Table Columns
+        { title: "주문번호", field: "order_id", cellClick: this.openOrder},
+        { title: "주문상태", field: "order_state" },
+        { title: "주문일자", field: "order_date" },
+        { title: "주문자", field: "order_name" },
+        { title: "주문수량", field: "order_quantity" },
+        { title: "주문금액", field: "order_price" },
+        { title: "주문상품", field: "order_product" },
+        { title: "주문연락처", field: "order_phone" },
+        { title: "주문메모", field: "order_memo" },
       ],
     });
   },
   methods: {
-    openCategory() {
+    openProduct() {
       window.open(
-        "/categories/show",
+        "/products/show",
         "_blank",
-        "width=1100, height=370, top=100, left=100, location=no, toolbar=no, menubar=no, status=no, scrollbars=no, resizable=no, fullscreen=no",
+        "width=1100, height=800, top=100, left=100, location=no, toolbar=no, menubar=no, status=no, scrollbars=no, resizable=no, fullscreen=no",
       );
     },
+    openOrder(cell, formatterParams, onRendered) {
+      //return `<a href="/orders/show/${cell.getValue()}" class="inertia-link">${cell.getValue()}</a>`;
+      window.open(
+        "/orders/show",
+        "_blank",
+        "width=1100, height=800, top=100, left=100, location=no, toolbar=no, menubar=no, status=no, scrollbars=no, resizable=no, fullscreen=no",
+      );
+    }
   },
 };
 </script>
@@ -234,5 +218,9 @@ export default {
 .select-box {
   height: 20px;
   width: 120px;
+}
+.inertia-link {
+  color: #000000;
+  text-decoration-line: none;
 }
 </style>

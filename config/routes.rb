@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     resources :categories
     resources :products
     resources :users
+    resources :orders
   end
 
   devise_for :users, path: '', path_names: {
@@ -29,6 +30,10 @@ Rails.application.routes.draw do
   get "products" => "products#index"
   
   get "products/show" => "products#show"
+
+  get "orders" => "orders#index"
+
+  get "orders/show" => "orders#show"
 
   get "dashboard" => "dashboard#index"
 
