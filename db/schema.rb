@@ -10,24 +10,72 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_11_023252) do
-  create_table "categories", charset: "latin1", force: :cascade do |t|
+ActiveRecord::Schema[7.1].define(version: 2024_04_22_111046) do
+  create_table "categories", charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.string "name"
-    t.string "color"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "parent_id"
+    t.string "use_yn"
+    t.string "register_id"
+    t.string "updater_id"
+    t.datetime "create_at"
+    t.datetime "update_at"
   end
 
-  create_table "expenses", charset: "latin1", force: :cascade do |t|
+  create_table "products", charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.string "name"
-    t.decimal "amount", precision: 10
-    t.bigint "category_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["category_id"], name: "index_expenses_on_category_id"
+    t.integer "state"
+    t.string "category_id"
+    t.string "company"
+    t.string "origin"
+    t.integer "margin_rate"
+    t.string "tax_yn"
+    t.string "introduce_img_src"
+    t.datetime "create_at"
+    t.datetime "update_at"
   end
 
-  create_table "users", charset: "latin1", force: :cascade do |t|
+  create_table "products_image", charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+    t.integer "product_id"
+    t.string "src"
+    t.string "use_yn"
+    t.datetime "create_at"
+    t.datetime "update_at"
+  end
+
+  create_table "products_option", charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+    t.integer "product_id"
+    t.string "option_name"
+    t.string "use_yn"
+    t.datetime "create_at"
+    t.datetime "update_at"
+  end
+
+  create_table "products_option_kind", charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+    t.integer "product_id"
+    t.string "type"
+    t.string "name"
+    t.string "use_yn"
+    t.datetime "create_at"
+    t.datetime "update_at"
+  end
+
+  create_table "products_price", charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+    t.integer "product_id"
+    t.integer "price"
+    t.integer "wonga"
+    t.datetime "create_at"
+    t.datetime "update_at"
+  end
+
+  create_table "products_stock", charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+    t.integer "product_option_id"
+    t.integer "plus_price"
+    t.integer "quantity"
+    t.datetime "create_at"
+    t.datetime "update_at"
+  end
+
+  create_table "users", charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -42,5 +90,4 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_11_023252) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "expenses", "categories"
 end
