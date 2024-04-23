@@ -1,6 +1,10 @@
+
 class CategoriesController < ApplicationController
   #before_action :set_category, only: %i[ show edit update destroy ]
-  before_action :authenticate_user!, except: [:index, :show, :show_daily_chart]
+  before_action :authenticate_user!, except: [:index, :show, :new]
+
+  rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
+  rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
 
   # GET /categories or /categories.json
   def index
@@ -10,20 +14,13 @@ class CategoriesController < ApplicationController
 
   # GET /categories/1 or /categories/1.json
   def show
-    render inertia: "categories/show", props: {
-      
-    }
-  end
-
-  def show_daily_chart
-    render inertia: "categories/dailyChart", props: {
-      
-    }
+    render inertia: "categories/show", props: {}
   end
 
   # GET /categories/new
   def new
     @category = Category.new
+    @category.insert(params[:category_id], params[:name], params[:parent_id], params[:use_yn])
   end
 
   # GET /categories/1/edit
@@ -69,13 +66,17 @@ class CategoriesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_category
-      @category = Category.find(params[:id])
-    end
 
     # Only allow a list of trusted parameters through.
     def category_params
-      params.require(:category).permit(:name, :color)
+      params.permit(:name, :parent_id, :use_yn)
+    end
+
+    def render_not_found_response
+      render json: { error: "category Not Found" }, status: :not_found
+    end
+
+    def render_unprocessable_entity_response(invalid)
+      render json: { errors: invalid.record.errors.full_messages }, status: :unprocessable_entity
     end
 end

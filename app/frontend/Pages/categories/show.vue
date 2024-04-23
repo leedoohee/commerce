@@ -7,17 +7,10 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
+      <v-btn icon @click="saveCategory">
+        <v-icon>mdi-content-save-plus-outline</v-icon>
       </v-btn>
 
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
     </v-toolbar>
     <v-divider></v-divider>
     <v-expansion-panels v-model="panel" :disabled="disabled">
@@ -34,7 +27,7 @@
             <tbody>
               <tr>
                 <td colspan="1" style="background-color: #b9f6ca">코드</td>
-                <td colspan="2">001</td>
+                <td colspan="2" :v-model="category_id">001</td>
                 <td colspan="1" style="background-color: #b9f6ca">상위 카테고리</td>
                 <td colspan="2">
                   <v-select
@@ -97,6 +90,7 @@
 <script>
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
+import axios from "axios";
 import { TabulatorFull as Tabulator } from "tabulator-tables"; //import Tabulator library
 import "tabulator-tables/dist/css/tabulator_semanticui.css";
 
@@ -211,6 +205,18 @@ export default {
           file: event.target.files[i],
         });
       }
+    },
+    saveCategory() {
+      axios.post("/categories/new", {
+        category_id: '001001',
+        name: '스웨터',
+        parent_id: '001',
+        use_yn: 'Y'
+      }).then((response) => {
+        console.log(response);
+      }).catch((error) => {
+        console.log(error);
+      })
     },
   },
 };
