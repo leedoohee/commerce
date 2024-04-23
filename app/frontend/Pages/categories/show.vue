@@ -208,9 +208,9 @@ export default {
     },
     saveCategory() {
       axios.post("/categories/new", {
-        category_id: '001001',
-        name: '스웨터',
-        parent_id: '001',
+        category_id: '001',
+        name: '상의',
+        parent_id: '',
         use_yn: 'Y'
       }).then((response) => {
         console.log(response);

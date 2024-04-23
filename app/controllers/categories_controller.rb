@@ -1,15 +1,20 @@
 
+require 'json'
+
 class CategoriesController < ApplicationController
   #before_action :set_category, only: %i[ show edit update destroy ]
   before_action :authenticate_user!, except: [:index, :show, :new]
-
+  use_inertia_instance_props
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
 
   # GET /categories or /categories.json
   def index
-    @categories = Category.all
-    render inertia: "categories/index", props: {}
+    display = Display.new
+    @categories = display.categoryList()
+
+    Rails.logger.info("object: #{@categories}")
+    render inertia: "categories/index", props: { categories: @categories }
   end
 
   # GET /categories/1 or /categories/1.json

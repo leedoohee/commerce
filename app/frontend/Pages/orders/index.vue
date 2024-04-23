@@ -11,7 +11,7 @@
       <div class="float-right">
         <v-btn><v-icon icon="mdi-reload"></v-icon></v-btn>
         <v-btn><v-icon icon="mdi-magnify"></v-icon></v-btn>
-        <v-btn @click="openProduct"
+        <v-btn @click="openOrder"
           ><v-icon icon="mdi-plus-box-outline"></v-icon
         ></v-btn>
       </div>

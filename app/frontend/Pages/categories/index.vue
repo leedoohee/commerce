@@ -103,97 +103,31 @@
   </v-container>
 </template>
 <script>
+import { defineProps } from "vue";
 import { TabulatorFull as Tabulator } from "tabulator-tables"; //import Tabulator library
 import "tabulator-tables/dist/css/tabulator_semanticui.css";
 export default {
+  props: {
+    categories: {
+      type: Array,
+      required: true,
+    },
+  },
   data() {
     return {
       tabulator: null, //variable to hold your table
-      tableDataNested: [
-        {
-          name: "Oli Bob",
-          location: "United Kingdom",
-          gender: "male",
-          col: "red",
-          dob: "14/04/1984",
-          _children: [
-            {
-              name: "Mary May",
-              location: "Germany",
-              gender: "female",
-              col: "blue",
-              dob: "14/05/1982",
-            },
-            {
-              name: "Christine Lobowski",
-              location: "France",
-              gender: "female",
-              col: "green",
-              dob: "22/05/1982",
-            },
-            {
-              name: "Brendon Philips",
-              location: "USA",
-              gender: "male",
-              col: "orange",
-              dob: "01/08/1980",
-              _children: [
-                {
-                  name: "Margret Marmajuke",
-                  location: "Canada",
-                  gender: "female",
-                  col: "yellow",
-                  dob: "31/01/1999",
-                },
-                {
-                  name: "Frank Harbours",
-                  location: "Russia",
-                  gender: "male",
-                  col: "red",
-                  dob: "12/05/1966",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          name: "Jamie Newhart",
-          location: "India",
-          gender: "male",
-          col: "green",
-          dob: "14/05/1985",
-        },
-        {
-          name: "Gemma Jane",
-          location: "China",
-          gender: "female",
-          col: "red",
-          dob: "22/05/1982",
-          _children: [
-            {
-              name: "Emily Sykes",
-              location: "South Korea",
-              gender: "female",
-              col: "maroon",
-              dob: "11/11/1970",
-            },
-          ],
-        },
-        {
-          name: "James Newman",
-          location: "Japan",
-          gender: "male",
-          col: "red",
-          dob: "22/03/1998",
-        },
-      ],
+      columns: [
+        { title: "코드", field: "category_id", width: 200, responsive: 0 }, //never hide this column
+        { title: "카테고리명", field: "name", width: 150 },
+        { title: "사용여부", field: "use_yn", width: 150 }
+      ]
     };
   },
   mounted() {
     //instantiate Tabulator when element is mounted
     this.tabulator = new Tabulator(this.$refs.table, {
       height: 500, // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
-      data: this.tableDataNested,
+      data: this.categories,
       dataTree: true,
       dataTreeStartExpanded: true,
       layout: "fitColumns", //fit columns to width of table (optional)
@@ -203,19 +137,7 @@ export default {
       dataReceiveParams: {
         last_page: "max_pages", //change last_page parameter name to "max_pages"
       },
-      columns: [
-        { title: "Name", field: "name", width: 200, responsive: 0 }, //never hide this column
-        { title: "Location", field: "location", width: 150 },
-        { title: "Gender", field: "gender", width: 150, responsive: 2 }, //hide this column first
-        { title: "Favourite Color", field: "col", width: 150 },
-        {
-          title: "Date Of Birth",
-          field: "dob",
-          hozAlign: "center",
-          sorter: "date",
-          width: 150,
-        },
-      ],
+      columns: this.columns
     });
   },
   methods: {
