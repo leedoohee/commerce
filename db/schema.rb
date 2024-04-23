@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_22_111046) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_23_111040) do
   create_table "categories", charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.string "name"
+    t.string "category_id"
     t.string "parent_id"
     t.string "use_yn"
     t.string "register_id"

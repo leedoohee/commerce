@@ -19,8 +19,10 @@ class Category < ApplicationRecord
 
     def nextCategoryId()
         client = Mysql2::Client.new(:host => "localhost", :username => "root", :password => "1234", :database => "ecommerce")
-        nextId = "00" + client.query("select category_id from categories where use_yn = 'Y' and length(category_Id) = 3 order by id desc limit 1").entries[0].values[1].to_i + 1
-        
+        sql = "select category_id from categories where use_yn = 'Y' and length(category_Id) = 3 order by id desc limit 1"
+        result = client.query(sql).entries
+        nextId = result.length > 0 ? "00" + (result[0]['category_id'].to_i + 1).to_s : "001"
         return nextId
     end
+
 end

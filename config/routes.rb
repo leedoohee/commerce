@@ -27,7 +27,9 @@ Rails.application.routes.draw do
   
   get "categories/show" => "categories#show"
 
-  post "categories/new" => "categories#new"
+  get "categories/new" => "categories#new"
+
+  post "categories/create" => "categories#create"
 
   get "products" => "products#index"
   

@@ -3,17 +3,14 @@ require 'json'
 
 class CategoriesController < ApplicationController
   #before_action :set_category, only: %i[ show edit update destroy ]
-  before_action :authenticate_user!, except: [:index, :show, :new]
-  use_inertia_instance_props
+  before_action :authenticate_user!, except: [:index, :show, :new, :create, :edit, :update, :destroy]
+
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
 
   # GET /categories or /categories.json
   def index
-    display = Display.new
-    @categories = display.categoryList()
-
-    Rails.logger.info("object: #{@categories}")
+    @categories = Display.new.categoryList()
     render inertia: "categories/index", props: { categories: @categories }
   end
 
@@ -24,8 +21,9 @@ class CategoriesController < ApplicationController
 
   # GET /categories/new
   def new
-    @category = Category.new
-    @category.insert(params[:category_id], params[:name], params[:parent_id], params[:use_yn])
+    @pCategories = Display.new.pCategoryList()
+    @nextId = Category.new.nextCategoryId()
+    render inertia: "categories/show", props: { nextId: @nextId, pCategories: @pCategories }
   end
 
   # GET /categories/1/edit
@@ -34,17 +32,10 @@ class CategoriesController < ApplicationController
 
   # POST /categories or /categories.json
   def create
-    @category = Category.new(category_params)
+    @category = Category.new
+    @category.insert(params[:category_id], params[:name], params[:parent_id], params[:use_yn])
 
-    respond_to do |format|
-      if @category.save
-        format.html { redirect_to category_url(@category), notice: "Category was successfully created." }
-        format.json { render :show, status: :created, location: @category }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @category.errors, status: :unprocessable_entity }
-      end
-    end
+    respond_to true
   end
 
   # PATCH/PUT /categories/1 or /categories/1.json
@@ -74,7 +65,7 @@ class CategoriesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def category_params
-      params.permit(:name, :parent_id, :use_yn)
+      params.permit(:category_id, :name, :parent_id, :use_yn)
     end
 
     def render_not_found_response

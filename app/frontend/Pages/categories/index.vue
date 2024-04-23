@@ -119,8 +119,8 @@ export default {
       columns: [
         { title: "코드", field: "category_id", width: 200, responsive: 0 }, //never hide this column
         { title: "카테고리명", field: "name", width: 150 },
-        { title: "사용여부", field: "use_yn", width: 150 }
-      ]
+        { title: "사용여부", field: "use_yn", width: 150 },
+      ],
     };
   },
   mounted() {
@@ -137,13 +137,13 @@ export default {
       dataReceiveParams: {
         last_page: "max_pages", //change last_page parameter name to "max_pages"
       },
-      columns: this.columns
+      columns: this.columns,
     });
   },
   methods: {
     openCategory() {
       window.open(
-        "/categories/show",
+        "/categories/new",
         "_blank",
         "width=1100, height=370, top=100, left=100, location=no, toolbar=no, menubar=no, status=no, scrollbars=no, resizable=no, fullscreen=no",
       );
