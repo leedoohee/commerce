@@ -37,7 +37,7 @@
                     variant="outlined"
                     density="compact"
                     color="green-accent-1"
-                    :items="pCategories.map((category) => category.name)"
+                    :items="['미선택'].concat(pCategories.map((category) => category.name))"
                     @update:modelValue="onChangePcategory($event)"
                   ></v-select>
                 </td>
@@ -139,6 +139,12 @@ export default {
         });
     },
     onChangePcategory(value) {
+      if (value === "미선택") {
+        this.parent_id = "";
+        this.display_next_id = this.nextId;
+        return;
+      }
+
       this.parent_id = this.pCategories.filter(
         (category) => category.name === value,
       )[0].category_id;
@@ -146,9 +152,6 @@ export default {
       this.display_next_id = this.pCategories.filter(
         (category) => category.name === value,
       )[0].nextId;
-
-      console.log(this.parent_id);
-      console.log(this.display_next_id);
     },
   },
 };

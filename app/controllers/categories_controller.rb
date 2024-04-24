@@ -1,17 +1,14 @@
-
-require 'json'
-
 class CategoriesController < ApplicationController
+  
   #before_action :set_category, only: %i[ show edit update destroy ]
-  before_action :authenticate_user!, except: [:index, :show, :new, :create, :edit, :update, :destroy]
+  before_action :authenticate_user!, except: [:index, :show, :new, :create, :edit, :update, :destroy, :search]
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
 
   # GET /categories or /categories.json
   def index
-    @categories = Display.new.categoryList()
-    render inertia: "categories/index", props: { categories: @categories }
+    render inertia: "categories/index", props: {}
   end
 
   # GET /categories/1 or /categories/1.json
@@ -30,12 +27,18 @@ class CategoriesController < ApplicationController
   def edit
   end
 
+  def search
+    @categories = Display.new.categoryList()
+    render json: @categories.to_json
+  end
+
   # POST /categories or /categories.json
   def create
     @category = Category.new
     @category.insert(params[:category_id], params[:name], params[:parent_id], params[:use_yn])
-
-    respond_to true
+    respond_to do |format|
+      format.json { render data: {}, status: :unprocessable_entity }
+    end
   end
 
   # PATCH/PUT /categories/1 or /categories/1.json
