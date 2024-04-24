@@ -10,7 +10,7 @@
       <div class="float-left"></div>
       <div class="float-right">
         <v-btn><v-icon icon="mdi-reload"></v-icon></v-btn>
-        <v-btn><v-icon icon="mdi-magnify"></v-icon></v-btn>
+        <v-btn @click="searchCategories"><v-icon icon="mdi-magnify"></v-icon></v-btn>
         <v-btn @click="openCategory"
           ><v-icon icon="mdi-plus-box-outline"></v-icon
         ></v-btn>
@@ -104,7 +104,7 @@ export default {
       dataTree: true,
       dataTreeStartExpanded: true,
       ajaxURL: "/categories-search",
-      //ajaxParams : {key : value, key2:value2}, //파라미터 데이터
+      ajaxParams : { code : this.code, name : this.name, use_yn : this.use_yn },
       layout: "fitColumns",
       pagination: true,
       ajaxResponse: function (url, params, response) {
@@ -124,9 +124,10 @@ export default {
       );
     },
     searchCategories() {
-      axios.get("/categories-search").then((response) => {
-        this.categories = response.data;
-        this.tabulator.setData(this.categories);
+      this.tabulator.setData("/categories-search", {
+        code: this.code,
+        name: this.name,
+        use_yn: this.use_yn,
       });
     },
   },

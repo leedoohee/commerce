@@ -1,9 +1,28 @@
 require 'mysql2'
 
 class Display
-    def categoryList()
+    def categoryList(code, name, use_yn)
         client = Mysql2::Client.new(:host => "localhost", :username => "root", :password => "1234", :database => "ecommerce")
-        categories = client.query("select * from categories where use_yn = 'Y' and parent_id = '' order by id asc")
+
+        if code == '' && name == ''
+            where_parent = " and parent_id = ''"
+        end
+
+        if code != ''
+            where_code = " and category_id = '#{code}'"
+        end
+
+        if name != ''
+            where_name = " and name like '%#{name}%'"
+        end
+
+        if use_yn != ''
+            where_use_yn = " and use_yn = '#{use_yn}'"
+        end
+
+        sql = "select * from categories where 1 = 1 #{where_code} #{where_name} #{where_use_yn} #{where_parent} order by id asc"
+
+        categories = client.query(sql)
         categories.each do |category|
             children = client.query("select * from categories where use_yn = 'Y' and parent_id = '#{category['category_id']}'")
             children.each do |child|

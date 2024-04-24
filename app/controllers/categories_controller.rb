@@ -28,7 +28,7 @@ class CategoriesController < ApplicationController
   end
 
   def search
-    @categories = Display.new.categoryList()
+    @categories = Display.new.categoryList(params[:code], params[:name], params[:use_yn])
     render json: @categories.to_json
   end
 
