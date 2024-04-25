@@ -106,7 +106,7 @@ export default {
         },
       }).then((response) => {
         localStorage.setItem("token", response.headers.authorization);
-        window.location.href = "/categories";
+        window.location.href = "/dashboard";
       });
     };
 

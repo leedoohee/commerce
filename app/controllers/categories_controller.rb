@@ -1,7 +1,6 @@
 class CategoriesController < ApplicationController
   
   #before_action :set_category, only: %i[ show edit update destroy ]
-  before_action :authenticate_user!, except: [:index, :show, :new, :create, :edit, :update, :destroy, :search]
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
@@ -34,8 +33,9 @@ class CategoriesController < ApplicationController
 
   # POST /categories or /categories.json
   def create
+    
     @category = Category.new
-    @category.insert(params[:category_id], params[:name], params[:parent_id], params[:use_yn])
+    @category.insert(params[:category_id], params[:name], params[:parent_id], params[:use_yn], current_user.name)
     respond_to do |format|
       format.json { render data: {}, status: :unprocessable_entity }
     end

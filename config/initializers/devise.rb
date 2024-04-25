@@ -306,7 +306,8 @@ Devise.setup do |config|
   config.responder.redirect_status = :see_other
 
   config.navigational_formats = []
-
+  config.http_authenticatable = true
+  
   # ==> Configuration for :registerable
 
   # When set to false, does not sign a user in automatically after their password is
