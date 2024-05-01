@@ -1,5 +1,5 @@
 class LoginController < ApplicationController
-    #skip_before_action :authenticate_user, only: [:index]
+    before_action :authenticate_user, except: [:index]
     
     def index
         render inertia: "login/index", props: {}

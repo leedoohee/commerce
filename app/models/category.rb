@@ -1,7 +1,7 @@
 require 'mysql2'
 
 class Category < ApplicationRecord
-
+    
     def insert(category_id, name, parent_id, use_yn, register_id)
         client = Mysql2::Client.new(:host => "localhost", :username => "root", :password => "1234", :database => "ecommerce")
         client.query("INSERT INTO categories (category_id, name, parent_id, use_yn, register_id, create_at) VALUES ('#{category_id}', '#{name}', '#{parent_id}', '#{use_yn}', '#{register_id}', now())")
