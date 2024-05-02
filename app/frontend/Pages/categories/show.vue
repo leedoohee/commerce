@@ -135,9 +135,8 @@ export default {
     },
   },
   data() {
-    console.log(this.category);
     return {
-      parent_name: this.category !== null ? this.category.parent_name : "",
+      parent_name: this.category !== null ? this.category.parent_name : "미선택",
       disabled: this.category !== null ? true : false,
       parent_id: this.category !== null ? this.category.parent_id : "",
       category_id:
@@ -165,6 +164,7 @@ export default {
         });
     },
     onChangePcategory(value) {
+
       if (value === "미선택") {
         this.parent_id = "";
         this.category_id = this.nextId;

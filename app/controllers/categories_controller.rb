@@ -118,10 +118,9 @@ private
     p_categories.each do |p_category|
         tmp_p_category = p_category.as_json
         child = Category.where(use_yn: 'Y').where(parent_id: p_category.category_id).order(category_id: :desc).limit(1).as_json
-        if child.length > 0
-          nextId = nextChildId(child[0]['category_id'], p_category.category_id)
-          tmp_p_category['nextId'] = nextId
-        end
+        nextId = nextChildId(child.length == 0 ? '' : child[0]['category_id'], p_category.category_id)
+        tmp_p_category['nextId'] = nextId
+    
         result.push(tmp_p_category)
     end
   
@@ -131,14 +130,14 @@ private
   def nextChildId(category_id, parent_id)
     current_id = category_id
     lastDepthNum = current_id.partition(parent_id).last
-    nextId = parent_id + "00" + (lastDepthNum.to_i + 1).to_s
+    nextId = category_id == '' ? parent_id + "001" : parent_id + "00" + (lastDepthNum.to_i + 1).to_s
     return nextId
   end
 
   def nextCategoryId()
-      category = Category.where(use_yn: 'Y').where("length(category_Id) = 3").order(id: :desc).limit(1).as_json
-      nextId = category.length > 0 ? "00" + (category[0]['category_id'].to_i + 1).to_s : "001"
-      return nextId
+    category = Category.where(use_yn: 'Y').where("length(category_Id) = 3").order(id: :desc).limit(1).as_json
+    nextId = category.length > 0 ? "00" + (category[0]['category_id'].to_i + 1).to_s : "001"
+    return nextId
   end
 
   # Only allow a list of trusted parameters through.
