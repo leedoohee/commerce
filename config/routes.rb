@@ -32,7 +32,7 @@ Rails.application.routes.draw do
 
   get "categories" => "categories#index"
   
-  get "categories/show" => "categories#show"
+  get "categories/(:category_id)/show" => "categories#show"
 
   get "categories/new" => "categories#new"
 

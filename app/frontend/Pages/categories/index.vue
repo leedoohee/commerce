@@ -10,7 +10,9 @@
       <div class="float-left"></div>
       <div class="float-right">
         <v-btn><v-icon icon="mdi-reload"></v-icon></v-btn>
-        <v-btn @click="searchCategories"><v-icon icon="mdi-magnify"></v-icon></v-btn>
+        <v-btn @click="searchCategories"
+          ><v-icon icon="mdi-magnify"></v-icon
+        ></v-btn>
         <v-btn @click="openCategory"
           ><v-icon icon="mdi-plus-box-outline"></v-icon
         ></v-btn>
@@ -45,21 +47,9 @@
 
       <v-col class="d-flex" cols="12" sm="4">
         <v-radio-group v-model="use_yn" inline hide-details>
-          <v-radio
-            label="전체"
-            value=""
-            color="green-accent-1"
-          ></v-radio>
-          <v-radio
-            label="사용"
-            value="Y"
-            color="green-accent-1"
-          ></v-radio>
-          <v-radio
-            label="미사용"
-            value="N"
-            color="green-accent-1"
-          ></v-radio>
+          <v-radio label="전체" value="" color="green-accent-1"></v-radio>
+          <v-radio label="사용" value="Y" color="green-accent-1"></v-radio>
+          <v-radio label="미사용" value="N" color="green-accent-1"></v-radio>
         </v-radio-group>
       </v-col>
     </v-row>
@@ -88,7 +78,27 @@ export default {
       name: "",
       use_yn: "",
       columns: [
-        { title: "코드", field: "category_id", width: 200, responsive: 0 }, //never hide this column
+        {
+          title: "코드",
+          field: "category_id",
+          width: 200,
+          formatter: function (cell, formatterParams) {
+            const value = cell.getValue();
+            return (
+              "<span style='color:#b9f6ca; font-weight:bold;'>" +
+              value +
+              "</span>"
+            );
+          },
+          cellClick: function (e, cell) {
+            const value = cell.getValue();
+            window.open(
+              `/categories/${value}/show`,
+              "_blank",
+              "width=1100, height=370, top=100, left=100, location=no, toolbar=no, menubar=no, status=no, scrollbars=no, resizable=no, fullscreen=no",
+            );
+          },
+        },
         { title: "카테고리명", field: "name", width: 150 },
         { title: "사용여부", field: "use_yn", width: 150 },
         { title: "생성자", field: "register_id", width: 150 },
@@ -104,7 +114,7 @@ export default {
       dataTree: true,
       dataTreeStartExpanded: true,
       ajaxURL: "/categories-search",
-      ajaxParams : { code : this.code, name : this.name, use_yn : this.use_yn },
+      ajaxParams: { code: this.code, name: this.name, use_yn: this.use_yn },
       layout: "fitColumns",
       pagination: true,
       ajaxResponse: function (url, params, response) {

@@ -25,7 +25,9 @@
             <tbody>
               <tr>
                 <td colspan="1" style="background-color: #b9f6ca">코드</td>
-                <td colspan="2">{{ display_next_id }}</td>
+                <td colspan="2">
+                  {{ category_id }}
+                </td>
                 <td colspan="1" style="background-color: #b9f6ca">
                   상위 카테고리
                 </td>
@@ -37,7 +39,18 @@
                     variant="outlined"
                     density="compact"
                     color="green-accent-1"
-                    :items="['미선택'].concat(pCategories.map((category) => category.name))"
+                    v-model="parent_name"
+                    v-bind="{ disabled }"
+                    :items="
+                      ['미선택'].concat(
+                        pCategories.map((category) => category.name),
+                      )
+                    "
+                    :items-value="
+                      [''].concat(
+                        pCategories.map((category) => category.category_id),
+                      )
+                    "
                     @update:modelValue="onChangePcategory($event)"
                   ></v-select>
                 </td>
@@ -77,11 +90,17 @@
               </tr>
               <tr>
                 <td colspan="1" style="background-color: #b9f6ca">등록자</td>
-                <td colspan="1">dooheelee</td>
+                <td colspan="1">
+                  {{ category !== null ? category.register_id : "" }}
+                </td>
                 <td colspan="1" style="background-color: #b9f6ca">등록일시</td>
-                <td colspan="1">2024-04-21 11:24:32</td>
+                <td colspan="1">
+                  {{ category !== null ? category.create_at : "" }}
+                </td>
                 <td colspan="1" style="background-color: #b9f6ca">수정일시</td>
-                <td colspan="1">2024-04-21 11:24:32</td>
+                <td colspan="1">
+                  {{ category !== null ? category.update_at : "" }}
+                </td>
               </tr>
             </tbody>
           </v-table>
@@ -110,14 +129,21 @@ export default {
       type: String,
       required: true,
     },
+    category: {
+      type: Object,
+      required: true,
+    },
   },
   data() {
+    console.log(this.category);
     return {
-      category_id: "",
-      parent_id: "",
-      display_next_id: this.nextId,
-      name: "",
-      use_yn: "Y",
+      parent_name: this.category !== null ? this.category.parent_name : "",
+      disabled: this.category !== null ? true : false,
+      parent_id: this.category !== null ? this.category.parent_id : "",
+      category_id:
+        this.category !== null ? this.category.category_id : this.nextId,
+      name: this.category !== null ? this.category.name : "",
+      use_yn: this.category !== null ? this.category.use_yn : "Y",
       panel: [0],
     };
   },
@@ -126,7 +152,7 @@ export default {
     saveCategory() {
       axios
         .post("/categories/create", {
-          category_id: this.display_next_id,
+          category_id: this.category_id,
           name: this.name,
           parent_id: this.parent_id,
           use_yn: this.use_yn,
@@ -141,7 +167,7 @@ export default {
     onChangePcategory(value) {
       if (value === "미선택") {
         this.parent_id = "";
-        this.display_next_id = this.nextId;
+        this.category_id = this.nextId;
         return;
       }
 
@@ -149,7 +175,7 @@ export default {
         (category) => category.name === value,
       )[0].category_id;
 
-      this.display_next_id = this.pCategories.filter(
+      this.category_id = this.pCategories.filter(
         (category) => category.name === value,
       )[0].nextId;
     },

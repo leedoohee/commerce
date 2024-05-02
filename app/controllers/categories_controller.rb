@@ -12,15 +12,18 @@ class CategoriesController < ApplicationController
 
   # GET /categories/1 or /categories/1.json
   def show
-    render inertia: "categories/show", props: {}
+    @category = Category.where(category_id: params[:category_id]).first.as_json
+    @category['parent_name'] = Category.where(category_id: @category['parent_id']).first.name
+    @pCategories = pCategories()
+    render inertia: "categories/show", props: { category: @category, pCategories: @pCategories }
   end
 
   # GET /categories/new
   def new
     @pCategories = pCategories()
     @nextId = nextCategoryId()
-
-    render inertia: "categories/show", props: { nextId: @nextId, pCategories: @pCategories }
+    @category = nil
+    render inertia: "categories/show", props: { nextId: @nextId, pCategories: @pCategories, category: @category}
   end
 
   # GET /categories/1/edit
@@ -107,47 +110,47 @@ class CategoriesController < ApplicationController
     end
   end
 
-  private
+private
 
-    def pCategories
-      result = []
-      p_categories = Category.where(use_yn: 'Y').where("parent_id = ''").order(id: :asc)
-      p_categories.each do |p_category|
-          tmp_p_category = p_category.as_json
-          child = Category.where(use_yn: 'Y').where(parent_id: p_category.category_id).order(category_id: :desc).limit(1).as_json
-          if child.length > 0
-            nextId = nextChildId(child[0]['category_id'], p_category.category_id)
-            tmp_p_category['nextId'] = nextId
-          end
-          result.push(tmp_p_category)
-      end
-    
-      return result
+  def pCategories
+    result = []
+    p_categories = Category.where(use_yn: 'Y').where("parent_id = ''").order(id: :asc)
+    p_categories.each do |p_category|
+        tmp_p_category = p_category.as_json
+        child = Category.where(use_yn: 'Y').where(parent_id: p_category.category_id).order(category_id: :desc).limit(1).as_json
+        if child.length > 0
+          nextId = nextChildId(child[0]['category_id'], p_category.category_id)
+          tmp_p_category['nextId'] = nextId
+        end
+        result.push(tmp_p_category)
     end
+  
+    return result
+  end
 
-    def nextChildId(category_id, parent_id)
-      current_id = category_id
-      lastDepthNum = current_id.partition(parent_id).last
-      nextId = parent_id + "00" + (lastDepthNum.to_i + 1).to_s
+  def nextChildId(category_id, parent_id)
+    current_id = category_id
+    lastDepthNum = current_id.partition(parent_id).last
+    nextId = parent_id + "00" + (lastDepthNum.to_i + 1).to_s
+    return nextId
+  end
+
+  def nextCategoryId()
+      category = Category.where(use_yn: 'Y').where("length(category_Id) = 3").order(id: :desc).limit(1).as_json
+      nextId = category.length > 0 ? "00" + (category[0]['category_id'].to_i + 1).to_s : "001"
       return nextId
-    end
+  end
 
-    def nextCategoryId()
-        category = Category.where(use_yn: 'Y').where("length(category_Id) = 3").order(id: :desc).limit(1).as_json
-        nextId = category.length > 0 ? "00" + (category[0]['category_id'].to_i + 1).to_s : "001"
-        return nextId
-    end
+  # Only allow a list of trusted parameters through.
+  def category_params
+    params.permit(:category_id, :name, :parent_id, :use_yn)
+  end
 
-    # Only allow a list of trusted parameters through.
-    def category_params
-      params.permit(:category_id, :name, :parent_id, :use_yn)
-    end
+  def render_not_found_response
+    render json: { error: "category Not Found" }, status: :not_found
+  end
 
-    def render_not_found_response
-      render json: { error: "category Not Found" }, status: :not_found
-    end
-
-    def render_unprocessable_entity_response(invalid)
-      render json: { errors: invalid.record.errors.full_messages }, status: :unprocessable_entity
-    end
+  def render_unprocessable_entity_response(invalid)
+    render json: { errors: invalid.record.errors.full_messages }, status: :unprocessable_entity
+  end
 end
