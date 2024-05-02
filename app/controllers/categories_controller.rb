@@ -1,5 +1,3 @@
-require 'json'
-
 class CategoriesController < ApplicationController
   
   #before_action :set_category, only: %i[ show edit update destroy ]
@@ -21,6 +19,7 @@ class CategoriesController < ApplicationController
   def new
     @pCategories = pCategories()
     @nextId = nextCategoryId()
+
     render inertia: "categories/show", props: { nextId: @nextId, pCategories: @pCategories }
   end
 
@@ -75,7 +74,7 @@ class CategoriesController < ApplicationController
     category.name = params[:name]
     category.parent_id = params[:parent_id]
     category.use_yn = params[:use_yn]
-    category.register_id = current_user.name
+    category.register_id = 'dooheelee'
     category.category_id = params[:category_id]
     category.create_at = Time.now
     category.save!
@@ -114,16 +113,15 @@ class CategoriesController < ApplicationController
       result = []
       p_categories = Category.where(use_yn: 'Y').where("parent_id = ''").order(id: :asc)
       p_categories.each do |p_category|
-          tmp_p_categories = p_category.as_json
-          children = Category.where(use_yn: 'Y').where(parent_id: p_category.category_id).order(category_id: :desc).limit(1)
-          tmp_children = children.as_json
-          tmp_p_categories['_children'] = tmp_children
-          nextId = nextChildId(tmp_children[0]['category_id'], p_category.category_id)
-          tmp_p_categories['nextId'] = nextId
-
-          result.push(tmp_p_categories)
+          tmp_p_category = p_category.as_json
+          child = Category.where(use_yn: 'Y').where(parent_id: p_category.category_id).order(category_id: :desc).limit(1).as_json
+          if child.length > 0
+            nextId = nextChildId(child[0]['category_id'], p_category.category_id)
+            tmp_p_category['nextId'] = nextId
+          end
+          result.push(tmp_p_category)
       end
-
+    
       return result
     end
 
@@ -131,16 +129,14 @@ class CategoriesController < ApplicationController
       current_id = category_id
       lastDepthNum = current_id.partition(parent_id).last
       nextId = parent_id + "00" + (lastDepthNum.to_i + 1).to_s
-      
       return nextId
     end
 
     def nextCategoryId()
-        category = Category.where(use_yn: 'Y').where("length(category_Id) = 3").order(id: :desc).limit(1)
+        category = Category.where(use_yn: 'Y').where("length(category_Id) = 3").order(id: :desc).limit(1).as_json
         nextId = category.length > 0 ? "00" + (category[0]['category_id'].to_i + 1).to_s : "001"
         return nextId
     end
-
 
     # Only allow a list of trusted parameters through.
     def category_params
