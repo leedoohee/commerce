@@ -7,7 +7,10 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn icon @click="saveCategory">
+      <v-btn
+        icon
+        @click="category !== null ? updateCategory() : saveCategory()"
+      >
         <v-icon>mdi-content-save-plus-outline</v-icon>
       </v-btn>
     </v-toolbar>
@@ -136,7 +139,8 @@ export default {
   },
   data() {
     return {
-      parent_name: this.category !== null ? this.category.parent_name : "미선택",
+      parent_name:
+        this.category !== null ? this.category.parent_name : "미선택",
       disabled: this.category !== null ? true : false,
       parent_id: this.category !== null ? this.category.parent_id : "",
       category_id:
@@ -163,8 +167,21 @@ export default {
           console.log(error);
         });
     },
+    updateCategory() {
+      axios
+        .put(`/categories/${this.category_id}/edit`, {
+          category_id: this.category_id,
+          name: this.name,
+          use_yn: this.use_yn,
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     onChangePcategory(value) {
-
       if (value === "미선택") {
         this.parent_id = "";
         this.category_id = this.nextId;

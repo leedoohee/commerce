@@ -13,7 +13,8 @@ class CategoriesController < ApplicationController
   # GET /categories/1 or /categories/1.json
   def show
     @category = Category.where(category_id: params[:category_id]).first.as_json
-    @category['parent_name'] = Category.where(category_id: @category['parent_id']).first.name
+    @p_category = Category.where(category_id: @category['parent_id']).first 
+    @category['parent_name'] = @p_category == nil ? '미선택' : @p_category['name']
     @pCategories = pCategories()
     render inertia: "categories/show", props: { category: @category, pCategories: @pCategories }
   end
@@ -28,6 +29,11 @@ class CategoriesController < ApplicationController
 
   # GET /categories/1/edit
   def edit
+    category = Category.find_by(category_id: params[:category_id])
+    category.update(name: params[:name], use_yn: params[:use_yn], updater_id: current_user.name, update_at: Time.now)
+    respond_to do |format|
+      format.json { render data: {}, status: :unprocessable_entity }
+    end
   end
 
   def search
@@ -77,7 +83,7 @@ class CategoriesController < ApplicationController
     category.name = params[:name]
     category.parent_id = params[:parent_id]
     category.use_yn = params[:use_yn]
-    category.register_id = 'dooheelee'
+    category.register_id = current_user.name
     category.category_id = params[:category_id]
     category.create_at = Time.now
     category.save!

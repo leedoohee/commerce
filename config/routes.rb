@@ -31,7 +31,9 @@ Rails.application.routes.draw do
   get "categories-search" => "categories#search"
 
   get "categories" => "categories#index"
-  
+
+  put "categories/(:category_id)/edit" => "categories#edit"
+
   get "categories/(:category_id)/show" => "categories#show"
 
   get "categories/new" => "categories#new"

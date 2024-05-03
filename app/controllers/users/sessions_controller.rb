@@ -9,7 +9,6 @@ class Users::SessionsController < Devise::SessionsController
   private
 
   def respond_with(current_user, _opt = {})
-    Rails.logger.info("object: #{current_user}")
     render json: {
       status: { code: 200, message: 'Logged in successfully.', data: { user: UserSerializer.new(resource).serializable_hash[:data][:attributes] } }
     }
