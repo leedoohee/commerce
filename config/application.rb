@@ -1,5 +1,4 @@
 require_relative "boot"
-require_relative '../lib/auth_middleware'
 
 require "rails/all"
 
@@ -28,7 +27,5 @@ module Admin
     config.action_dispatch.cookies_same_site_protection = :none
     config.action_controller.default_protect_from_forgery = false if ENV['RAILS_ENV'] == 'development'
     config.middleware.use ActionDispatch::Cookies
-    
-    # config.middleware.use AuthMiddleware
   end
 end

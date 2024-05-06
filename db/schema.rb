@@ -10,16 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_23_111040) do
-  create_table "categories", charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+ActiveRecord::Schema[7.1].define(version: 2024_05_22_111040) do
+  create_table "categories", primary_key: "category_id", id: :string, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.string "name"
-    t.string "category_id"
     t.string "parent_id"
     t.string "use_yn"
     t.string "register_id"
     t.string "updater_id"
     t.datetime "create_at"
     t.datetime "update_at"
+    t.index ["parent_id"], name: "index_categories_on_parent_id"
   end
 
   create_table "products", charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|

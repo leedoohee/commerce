@@ -1,9 +1,9 @@
 class CreateCategories < ActiveRecord::Migration[7.1]
   def change
-    create_table :categories do |t|
+    create_table :categories, :id=> false do |t|
       t.string :name
-      t.string :category_id
-      t.string :parent_id
+      t.string :category_id, primary_key: true
+      t.references :parent, type: :string
       t.string :use_yn
       t.string :register_id
       t.string :updater_id

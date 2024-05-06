@@ -7,16 +7,8 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
+      <v-btn icon @click="saveProduct()">
+        <v-icon>mdi-content-save-plus-outline</v-icon>
       </v-btn>
     </v-toolbar>
     <v-expansion-panels v-model="panel" :disabled="disabled" multiple>
@@ -331,6 +323,7 @@ import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import { TabulatorFull as Tabulator } from "tabulator-tables"; //import Tabulator library
 import "tabulator-tables/dist/css/tabulator_semanticui.css";
+import axios from "axios";
 
 export default {
   name: "show",
@@ -339,6 +332,18 @@ export default {
   },
   data() {
     return {
+      name: "test1",
+      category: "001001",
+      state: "01",
+      styleNumber: "test-styleNumber",
+      price: "10000",
+      margin_rate: "10",
+      tax: "Y",
+      wonga: "8000",
+      manufacturer: "korea",
+      origin: "korea",
+      description: "상품테스트 입니다.",
+      uploadedFiles: [],
       single_table: null,
       matrix_table: null,
       sizeData: ["S", "M", "L"],
@@ -449,6 +454,35 @@ export default {
           file: event.target.files[i],
         });
       }
+    },
+    saveProduct() {
+      axios
+        .post("http://localhost:3000/products", {
+          name: this.name,
+          category: this.category,
+          state: this.state,
+          styleNumber: this.styleNumber,
+          margin_rate: this.margin_rate,
+          tax: this.tax,
+          price: this.price,
+          wonga: this.wonga,
+          manufacturer: this.manufacturer,
+          origin: this.origin,
+          description: this.description,
+          images: this.uploadedFiles,
+          options: this.options,
+          optionData: this.optionData,
+          sizeData: this.sizeData,
+          colorData: this.colorData,
+          matrixItems: this.matrixItems,
+          singleItems: this.singleItems,
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 };

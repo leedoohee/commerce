@@ -42,6 +42,8 @@ Rails.application.routes.draw do
 
   get "products" => "products#index"
   
+  post "products/create" => "products#create"
+  
   get "products/show" => "products#show"
 
   get "orders" => "orders#index"
@@ -50,8 +52,6 @@ Rails.application.routes.draw do
 
   get "dashboard" => "dashboard#index"
 
-  get "expenses" => "expenses#index"
-  
   get "login-v2"   => "login#index"
   # Defines the root path route ("/")
   # root "posts#index"
