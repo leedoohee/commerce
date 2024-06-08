@@ -4,7 +4,7 @@ class Product < ApplicationRecord
     has_many :product_image
     has_many :product_option
     has_many :product_option_kind
-    has_one :product_price
+    has_one  :product_price
 
     def self.create(params)
         product = self.new

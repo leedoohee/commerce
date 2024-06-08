@@ -1,6 +1,6 @@
 
 class Category < ApplicationRecord
-    @table_name = "category"
+    @table_name = "categories"
 
     has_one :Category, class_name: "Category", foreign_key: 'parent_id'
 
