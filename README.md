@@ -6,5 +6,3 @@
   * 현재, 카테고리 프론트, 백엔드 작업 완료, 상품, 주문, 유저는 화면 작업 진행
   * tabulator grid opensource 를 사용하여 개발중
 
-
-![Uploading 카테고리.png…]()
